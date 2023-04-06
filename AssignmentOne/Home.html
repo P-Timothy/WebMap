@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v2.2.0/mapbox-gl.js'></script>
+        <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v2.2.0/mapbox-gl.css' rel='stylesheet' />
+        <link rel="stylesheet" href="main.css">
+        
+   
+    </head>
+
+    
+    
+    <body>
+    
+
+        <div id='map'>
+            <script>
+                 mapboxgl.accessToken = 'pk.eyJ1IjoicHRpbW15cyIsImEiOiJjbGc1ZnAxenYwMnZ6M3NvOG0zcGpzZmx4In0.drh78VNuPvJOOpSrS8wsGQ';
+            
+                 var map = new mapboxgl.Map({
+                    container: 'map', // id of a div on your page, where the map will be inserted
+                    style: 'mapbox://styles/mapbox/streets-v11', // stylesheet location
+                    center: [-87.6298, 41.8781], // starting position [lng, lat] eg. [-122.6788, 45.5212]
+                    zoom: 11 // starting zoom 
+                    });
+                var market = new mapboxgl.Marker({color:'purple'})
+                    .setLngLat([-87.6298, 41.8781]) // starting position [lng, lat] 
+                    .addTo(map);
+            </script>
+        </div>
+    
+    
+    </body>
+
+
+
+
+
+</html>
