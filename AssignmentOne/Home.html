@@ -13,6 +13,7 @@
     
     <body>
     
+        
 
         <div id='map'>
             <script>
@@ -20,14 +21,42 @@
             
                  var map = new mapboxgl.Map({
                     container: 'map', // id of a div on your page, where the map will be inserted
-                    style: 'mapbox://styles/mapbox/streets-v11', // stylesheet location
+                    style: 'mapbox://styles/mapbox/dark-v11', // stylesheet location
                     center: [-87.6298, 41.8781], // starting position [lng, lat] eg. [-122.6788, 45.5212]
                     zoom: 11 // starting zoom 
                     });
-                var market = new mapboxgl.Marker({color:'purple'})
+                
+                 var popup = new mapboxgl.Popup({ offset: 25 })
+                    .setHTML('Hello World. Welcome to Chicago!');
+                
+                
+                var marker = new mapboxgl.Marker({color:'purple'})
                     .setLngLat([-87.6298, 41.8781]) // starting position [lng, lat] 
+                    .setPopup(popup) //add the popup with the variable name 'popup' to the marker 
+                    .addTo(map);
+                
+                 var popup_layer = new mapboxgl.Popup({closeOnClick: true,                                             anchor: 'top-right'}) 
+                    .setLngLat([-87.6298, 41.8781]) //popup coordinates
+                    .setHTML('<h1>Hi Chicago!</h1>') //popup text
+                    .addTo(map); //add this popup to the map!
+                
+                 var popup_layer_voodoo = new mapboxgl.Popup({closeOnClick: true,                                           anchor: 'top-left' })
+                    .setLngLat([-87.64515612310208, 41.93290044161163])
+                    .setHTML('<a href="https://www.stansdonuts.com/">Stans donuts</a>')
+                    .addTo(map);
+                
+                var marker2 = new mapboxgl.Marker({color:'green'})
+                    .setLngLat([-87.65772228465762, 41.929357747708856]) // starting position [lng, lat] 
+                    .addTo(map);
+                var marker2 = new mapboxgl.Marker({color:'red'})
+                    .setLngLat([-87.64089812887978, 41.943613978534216]) // starting position [lng, lat] 
                     .addTo(map);
             </script>
+        </div>
+        
+        <div id='title'>
+     		<h1>My Map of Chicago</h1>
+     		<h2>By: P. Timothy Young Schragel</h2>
         </div>
     
     
