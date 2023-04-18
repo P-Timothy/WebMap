@@ -8,16 +8,16 @@
     </head>
     
     <body>
-    
-        <h1> Map 1: </h1>
+        <h1> My cars journey to Oregon.</h1>
+        <h2> Starting Point: </h2>
             <div id='map1'></div>
         <hr>
         
-        <h1> Map 2: </h1>
+        <h2> Midway: </h2>
             <div id="map2"></div>
         <hr>
         
-        <h1> Map 3: </h1>
+        <h2> Final Destination: </h2>
             <div id="map3"></div>
         
         
@@ -27,14 +27,14 @@
                 var map = new mapboxgl.Map({
                     container: 'map1', 
                     style: 'mapbox://styles/mapbox/streets-v11', 
-                    center: [-87.6298, 41.8781],
+                    center: [-81.82120915952031,26.276602429318284],
                     zoom: 11 });
                 
                 var popup = new mapboxgl.Popup()
-                    .setText('This is Chicago, my hometown.');
+                    .setText('North Naples, where my cars journey began in July 2020.');
 
-                var marker = new mapboxgl.Marker({color:'red'})
-                    .setLngLat([-87.6298, 41.8781]) 
+                var marker = new mapboxgl.Marker({color:'green'})
+                    .setLngLat([-81.82120915952031,26.276602429318284]) 
                     .setPopup(popup)  
 		            .addTo(map); 
                
@@ -50,14 +50,14 @@
                 var map2 = new mapboxgl.Map({
                     container: 'map2',
                     style: 'mapbox://styles/mapbox/streets-v11',
-                    center: [-86.7439, 41.7939],
-                    zoom: 11 });
+                    center: [-87.65775447326118, 41.92913423266202],
+                    zoom: 11 }); 
                 
                 var popup2 = new mapboxgl.Popup()
-                    .setText('This is my families lakehouse in New Buffalo, MI.');
+                    .setText('Chicago, IL, the halfway point.');
                 
-                var marker2 = new mapboxgl.Marker({color:'purple'})
-                    .setLngLat([-86.74094004038686, 41.804913590636744])
+                var marker2 = new mapboxgl.Marker({color:'yellow'})
+                    .setLngLat([-87.65775447326118, 41.92913423266202])
                     .setPopup(popup2)
                     .addTo(map2);
                 
@@ -73,9 +73,26 @@
                 var map3 = new mapboxgl.Map({
                     container: 'map3',
                     style: 'mapbox://styles/mapbox/streets-v11',
-                    center: [-87.71304310370903, 42.08758931178424]
+                    center: [-123.07132513086489, 44.03383536230336],
+                    zoom: 11 });
                     
-                })
+                var popup3 = new mapboxgl.Popup()
+                    .setText('Eugene, OR, the destination.');
+                
+                var marker3 = new mapboxgl.Marker({color:'red'})
+                    .setLngLat([-123.07132513086489, 44.03383536230336])
+                    .setPopup(popup3)
+                    .addTo(map3);
+                
+                map3.dragPan.disable();
+                map3.scrollZoom.disable();
+                map3.boxZoom.disable();
+                map3.dragRotate.disable();
+                map3.keyboard.disable();
+                map3.doubleClickZoom.disable();
+                map3.touchZoomRotate.disable();
+                map3.touchZoomRotate.disableRotation();
+
             </script>
     
     

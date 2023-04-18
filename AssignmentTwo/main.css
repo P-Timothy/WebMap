@@ -1,4 +1,6 @@
-body { margin:50px; padding:0; }
-#map1 { position:relative; height:300px; width:50%;}
+body { margin:50px; padding:0; background: black; align-content: center;}
+h1 {color: white; align-content: center}
+h2 {color: white; align-content: center; align-self: center}
+#map1 { position: relative; height: 300px; width:50%}
 #map2 { position: relative; height: 300px; width:50%}
 #map3 { position: relative; height: 300px; width:50%}
