@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v2.2.0/mapbox-gl.js'></script>
+        <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v2.2.0/mapbox-gl.css' rel='stylesheet' />
+        <link rel="stylesheet" href="main.css">
+    </head>
+    
+    <body>
+    
+        <h1> Map 1: </h1>
+            <div id='map1'></div>
+        <hr>
+        
+        <h1> Map 2: </h1>
+            <div id="map2"></div>
+        <hr>
+        
+        <h1> Map 3: </h1>
+            <div id="map3"></div>
+        
+        
+            <script>
+                 mapboxgl.accessToken = 'pk.eyJ1IjoicHRpbW15cyIsImEiOiJjbGc1ZnAxenYwMnZ6M3NvOG0zcGpzZmx4In0.drh78VNuPvJOOpSrS8wsGQ';
+                
+                var map = new mapboxgl.Map({
+                    container: 'map1', 
+                    style: 'mapbox://styles/mapbox/streets-v11', 
+                    center: [-87.6298, 41.8781],
+                    zoom: 11 });
+                
+                var popup = new mapboxgl.Popup()
+                    .setText('This is Chicago, my hometown.');
+
+                var marker = new mapboxgl.Marker({color:'red'})
+                    .setLngLat([-87.6298, 41.8781]) 
+                    .setPopup(popup)  
+		            .addTo(map); 
+               
+                map.dragPan.disable();
+                map.scrollZoom.disable();
+                map.boxZoom.disable();
+                map.dragRotate.disable();
+                map.keyboard.disable();
+                map.doubleClickZoom.disable();
+                map.touchZoomRotate.disable();
+                map.touchZoomRotate.disableRotation();
+                
+                var map2 = new mapboxgl.Map({
+                    container: 'map2',
+                    style: 'mapbox://styles/mapbox/streets-v11',
+                    center: [-86.7439, 41.7939],
+                    zoom: 11 });
+                
+                var popup2 = new mapboxgl.Popup()
+                    .setText('This is my families lakehouse in New Buffalo, MI.');
+                
+                var marker2 = new mapboxgl.Marker({color:'purple'})
+                    .setLngLat([-86.74094004038686, 41.804913590636744])
+                    .setPopup(popup2)
+                    .addTo(map2);
+                
+                map2.dragPan.disable();
+                map2.scrollZoom.disable();
+                map2.boxZoom.disable();
+                map2.dragRotate.disable();
+                map2.keyboard.disable();
+                map2.doubleClickZoom.disable();
+                map2.touchZoomRotate.disable();
+                map2.touchZoomRotate.disableRotation();
+                
+                var map3 = new mapboxgl.Map({
+                    container: 'map3',
+                    style: 'mapbox://styles/mapbox/streets-v11',
+                    center: [-87.71304310370903, 42.08758931178424]
+                    
+                })
+            </script>
+    
+    
+    
+    </body>
+    
+    
+</html>
