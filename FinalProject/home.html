@@ -22,20 +22,86 @@
             
         <script>
              mapboxgl.accessToken = 'pk.eyJ1IjoicHRpbW15cyIsImEiOiJjbGc1ZnAxenYwMnZ6M3NvOG0zcGpzZmx4In0.drh78VNuPvJOOpSrS8wsGQ';
-        
-            /* Initiate Variables for fly-to locations  */
-            var clickCounter = 1;
-            var flyLocations = 0;
-            var home = ;
-            
-            const map = new mapboxgl.Map({
-                container: 'map', // container ID
-                style: 'mapbox://styles/mapbox/streets-v12', // style URL
-                center: [-98.5794582444902, 39.82850654733907], // starting position [lng, lat]
-                zoom: 3, // starting zoom
-                
-            }); 
+                const map = new mapboxgl.Map({
+                    container: 'map', // container ID
+                    style: 'mapbox://styles/mapbox/streets-v12', // style URL
+                    center: [-98.5794582444902, 39.82850654733907], // starting position [lng, lat]
+                    zoom: 3, // starting zoom
+                }); 
      
+            map.on('load', () => {
+                // Add new geojson source to our webpage
+                // cluster = true menas point_cloud property will be added
+                map.addSource('Plants', {
+                    type: 'geojson',
+                    data: 'Output.geojson',
+                    cluster: true,
+                    clusterMaxZoom: 14,  //Max cluster zoom
+                   // clusterMinZoom: 9,
+                    clusterRadius: 50    // Radius oc clusters 
+                });
+                
+                map.addLayer({
+                    id: 'clusters',
+                    type: 'circle',
+                    source: 'Plants',
+                    filter: ['has', 'point_cloud'],
+                    paint: {
+                        'circle-color': [ 
+                            // set the color of the circle baised on size
+                            'step',
+                            ['get', 'point_count'],
+                            // under 20 points means this color
+                            '#51bbd6',
+                            20,
+                            // under 80 points means this color
+                            '#f1f075',
+                            80,
+                            // over means this color
+                            '#f28cb1'
+                        ],
+                        'circle-radius': [
+                            // set size of circle baised on amount
+                            'step',
+                            ['get', 'point_count'],
+                            // under 20 pts means this size
+                            20,
+                            20,
+                            // 20-80 pts means this size
+                            30,
+                            80,
+                            // 80+ means this size
+                            40
+                        ]
+                    }
+                });
+                
+                map.addLayer({
+                    // Visulize the number of plants
+                    id: 'cluster-count',
+                    type: 'symbol',
+                    source: 'Plants',
+                    filter: ['has', 'point_count'],
+                    layout: {
+                        'text-field': ['get', 'point_count_abbreviated'],
+                        'text-font': ['DIN Offc Pro Medium', 'Arial Unicode MS Bold'],
+                        'text-size': 12
+                    }
+                });
+ 
+                map.addLayer({
+                    id: 'unclustered-point',
+                    type: 'circle',
+                    source: 'Plants',
+                    filter: ['!', ['has', 'point_count']],
+                    paint: {
+                        'circle-color': '#11b4da',
+                        'circle-radius': 4,
+                        'circle-stroke-width': 1,
+                        'circle-stroke-color': '#fff'
+                    }
+                });
+            });
         </script>
         
         
