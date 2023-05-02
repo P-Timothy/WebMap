@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        
+        <meta charset="utf-8" />
+        <title>Econ Data Visulization</title>
+        <meta name="viewport" content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+        <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v2.2.0/mapbox-gl.js'></script>
+        <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v2.2.0/mapbox-gl.css' rel='stylesheet' />
+        
+        
+        <style>
+            
+        body { margin:0; padding:0; }
+        #map { position:relative; height: 600px; width:75% }
+        #title { z-index: 9999; background-color:white; opacity: 100%; text-align: left }
+            
+        </style>
+        
+    </head>
+    
+    <body>
+    
+        <div id="map"></div>
+    
+        <div id='title'>
+     		<h1>WebMapping Econ Project</h1>
+     		<h2>Author: P. Timothy Young Schragel</h2>
+        </div>
+        
+    
+    
+        <script>
+            mapboxgl.accessToken = 'pk.eyJ1IjoicHRpbW15cyIsImEiOiJjbGc1Zmp6ODQwMnRrM2ZvOG5kMDA1aDM3In0.FSlp6F-U5z8ZkTHvHaPI3w'; 
+            var map = new mapboxgl.Map({
+                container: 'map', // container id
+                style: 'mapbox://styles/ptimmys/clh2c77a7008101pp1tg5ebnx', // stylesheet location
+            });
+            
+            // adding in zoom and rotation                   This sets position to top left
+            map.addControl(new mapboxgl.NavigationControl(), 'top-right');
+            
+            
+            
+            
+            
+        </script>
+    </body>
+</html>
