@@ -12,59 +12,28 @@
         
         <style>
             
-        body { 
-            margin:0; 
-            padding:0; 
+            body { 
+                margin:0; 
+                padding:0; 
+                }
+            #map { 
+                position: absolute; 
+                top: 0 ; 
+                bottom: 0 ;
+                width: 100% ;
+                }
+            #title {
+                position: absolute;
+                margin: 10px;
+                width: 240px;
+                background-color: white;
+                padding: 10px 20px; 
             }
-        #map { 
-            position: absolute; 
-            height: 90%; 
-            width: 100%;
-            top: 10%;
+            #slider {
+                position: absolute;
+                width: 20%;
             }
-        #title { 
-            position: relative; 
-            width: 100%; 
-            height: 20px;
-            top: 0;
-            background-color:white; 
-            opacity: 100%; 
-            text-align: center; 
-            }
-        .map-overlay {
-            font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
-            position: absolute;
-            width: 25%;
-            top: 0;
-            left: 0;
-            padding: 10px;
-            }
-        .map-overlay .map-overlay-inner {
-            background-color: #fff;
-            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
-            border-radius: 3px;
-            padding: 10px;
-            margin-bottom: 10px;
-            }
-        .map-overlay h2 {
-            line-height: 24px;
-            display: block;
-            margin: 0 0 10px;
-            } 
-        .map-overlay .legend .bar {
-            height: 10px;
-            width: 100%;
-            background: linear-gradient(to right, #fca107, #7f3121);
-            } 
-        .map-overlay input {
-            background-color: transparent;
-            display: inline-block;
-            width: 100%;
-            position: relative;
-            margin: 0;
-            cursor: ew-resize;
-            }
-            
+
         </style>
         
     </head>
@@ -72,54 +41,46 @@
     <body>
     
         <div id="map"></div>
-    
-        <div id='title'>
-     		<h3>WebMapping Econ Project</h3>
-     		<h4>Author: P. Timothy Young Schragel</h4>
+  
+        <div id="slider">
+            <input id="slider" class="row" type="range"
+                   min="1960" max="1992" step="1" value="1960"/>
         </div>
-        
-        <div class="map-overlay top">
-            <div class="map-overlay-inner">
-                <h2>Manf. Plants Per Year</h2>
-                <label id="year"></label>
-                <input id="slider" type="range" min="1965" max="1992" step="1" value="1965">
-            </div>
-            <div class="map-overlay-inner">
-                <div id="legend" class="legend">
-                    <div class="bar"></div>
-                    <div>Year</div>
-                </div>
-            </div>
-        </div>
+
 
         <script>
             mapboxgl.accessToken = 'pk.eyJ1IjoicHRpbW15cyIsImEiOiJjbGc1Zmp6ODQwMnRrM2ZvOG5kMDA1aDM3In0.FSlp6F-U5z8ZkTHvHaPI3w'; 
+            
+            const filterGroup = document.getElementById('filter-group')
+            
             var map = new mapboxgl.Map({
                 container: 'map', // container id
                 style: 'mapbox://styles/mapbox/light-v11', // stylesheet location
-                // mapbox://styles/ptimmys/clh2c77a7008101pp1tg5ebnx
+                center: [-98.35,39.5],
+                zoom: 3.5
             });
             
-            const years = [
-                '1965', '1966', '1967', '1968',
-                '1969', '1970', '1971', '1972',
-                '1973', '1974', '1975', '1976',
-                '1977', '1978', '1979', '1980',
-                '1981', '1982', '1983', '1984',
-                '1985', '1986', '1987', '1988',
-                '1989', '1990', '1991', '1992'
-            ]
-            
-            function filterBy(year) {
-                const filters = ['=', 'year', year];
-                map.setFilter('manf-year', filters);
+            map.on('load', () => {
+                map.addLayer({
+                    //add GeoJSON source
+                    id: 'yearJ',
+                    type: 'circle',
+                    source: {
+                        type: 'geojson',
+                        data: './EconJsonFile.geojson'
+                    },
+                    'filter': ['all', filteryear]
+                });
                 
-                document.getElementsById('year').textContent = years[year];
-            }
-            
-            mo.on('load', () => {
-                d3.json('EconJsonFile.geojson' ,jsonCallback)
-            })
+              document.getElementById('slider').addEventListener('input', (event) => {
+                  const year = parseInt(event.target.value);
+                  // update the map
+                  map.setFilter('year', ['==', ['properties', ['get', 'YEAR']], year]);
+
+                  // update text in the UI
+                  document.getElementById('active-year').innerText = year;
+              });
+            });
             
             
             
