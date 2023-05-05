@@ -1,0 +1,12 @@
+
+
+
+------- SIC codes --------
+20..    ---   food Items        - 79675c - 6b705c - ea9ba2 - fb8500 - 577590
+38-39   ---   Misk Manf. Ind.   - 6c584c - a5a58d - 83203e - fd9e02 - 43aa8b
+22-32   ---   Raw Materials txt - a98467 - b7b7a4 - b8475d - ffb703 - 90be6d
+
+33-34   ---   Metals            - 7b8f4b - ffe8d6 - cdb9ae - 023047 - f9c74f
+35      ---   Machinery         - adc178 - ddbea9 - e6dcd7 - 126782 - f8961e
+36      ---   Electronics       - dde5b6 - d4ac94 - ffffff - 219ebc - f3722c
+37      ---   Cars              - f0ead2 - cb997e - 3f4c51 - 8ecae6 - f94144

@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    <meta charset="utf-8">
+    <title>Filter symbols by toggling a list</title>
+    <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
+    <link href="https://api.mapbox.com/mapbox-gl-js/v2.2.0/mapbox-gl.css" rel="stylesheet">
+    <script src="https://api.mapbox.com/mapbox-gl-js/v2.2.0/mapbox-gl.js"></script>
+    <style>
+        body { 
+            margin: 0; padding: 0; 
+        }
+        #map { 
+            position: absolute; top: 0; bottom: 0; width: 100%; 
+        }
+        #userInterface { position: absolute; width: 25%; top: 0; left: 0; padding: 10px;
+                         background-color: #fff; box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+                         border-radius: 3px; padding: 10px; margin-bottom: 10px; 
+                         width: 225px;
+        }
+        #slider { 
+            left: 5%;
+        }
+        #clusterGroup { 
+            top: 20px; 
+        }
+        #yearDisplay {
+            font-size: 20px;
+            margin-left: 130px;
+        }
+        #speedSetting {
+            margin-left: 7px;
+        }
+        #changeStyle {
+            margin-top: 10px;
+        }
+        #reloadData {
+            margin-left: 5px;
+        }
+        #legend {
+            position: absolute;
+            width: 20%;
+            top: 0;
+            right: 0;
+        }
+        .LegendContainer {
+            position: absolute;
+            background-color: #fff;
+            bottom: 0;
+            width: 300px;
+            height: 200px;
+        }
+        .legendItem {
+            margin: 0px;
+            display:inline-block;
+            margin: 2px;
+        }
+        .food {
+            color:#577590 ;
+        }
+        .rawMaterials {
+            color:#90be6d ;
+        }
+        .metals {
+            color:#f9c74f ;
+        }
+        .machinery {
+            color:#f8961e ;
+        }
+        .electronics {
+            color:#f3722c ;
+        }
+        .auto {
+            color:#f94144 ;
+        }
+        .miscManf {
+            color:#43aa8b ;
+        }
+    </style>
+    </head>
+    
+    <body>
+
+        
+        <div id="map"></div>
+        
+        <div id='userInterface'>
+            <button onclick="myFunction()">Play/Pause</button>
+            <input id="slider" type="range" min="0" max="32" step="1" value="0">
+            <label id='yearDisplay'>1960</label>
+            <button id="clusterGroup" onclick="darkMode()">Dark/Light</button>
+            <button id='speedSetting' onclick="changeSpeed()">Change Speed</button>
+            <br>
+            <button id='changeStyle' onclick="changeDataStyle()">Change Style</button>
+            <button id='reloadData' onclick="reloadMapData()">Reload Map</button>
+        </div>
+        
+        
+        <!-- This div is used to create a legend: Span class color is changed in css under 'renter' and 'owner'  -->
+        <div class="LegendContainer">
+            <div class="legendItem">
+                <span class="food">&#11044;</span>
+                <span class="layerDescription">Food (sic: 2032-2099)</span>
+            </div>
+            <br>
+            <div class="legendItem">
+                <span class="rawMaterials">&#11044;</span>
+                <span class="layerDescription">Textiles/Raw Materials (sic: 2259-3297)</span>
+            </div>
+            <br>
+            <div class="legendItem">
+                <span class="metals">&#11044;</span>
+                <span class="layerDescription">Metal Products (sic: 3312-3498)</span>
+            </div>
+            <br>
+            <div class="legendItem">
+                <span class="machinery">&#11044;</span>
+                <span class="layerDescription">Machinery (sic: 3531-3593)</span>
+            </div>
+            <br>
+            <div class="legendItem">
+                <span class="electronics">&#11044;</span>
+                <span class="layerDescription">Electronics (sic: 3616-3695)</span>
+            </div>
+            <br>
+            <div class="legendItem">
+                <span class="auto">&#11044;</span>
+                <span class="layerDescription">Automotives (sic: 3711,3714, 3751)</span>
+            </div>
+            <br>
+            <div class="legendItem">
+                <span class="miscManf">&#11044;</span>
+                <span class="layerDescription">Misc. (sic: 37+, without Auto.)</span>
+            </div>
+        </div>
+        
+        
+        <script>
+            
+            //////////////////////////////////////////////////////////
+            //                     Mapbox setup                     //
+            //////////////////////////////////////////////////////////
+            mapboxgl.accessToken = 'pk.eyJ1IjoicHRpbW15cyIsImEiOiJjbGc1ZnAxenYwMnZ6M3NvOG0zcGpzZmx4In0.drh78VNuPvJOOpSrS8wsGQ';
+            
+            //  load map  //
+            var map = new mapboxgl.Map({
+                container: 'map', // container id
+                style: 'mapbox://styles/mapbox/dark-v11',  // stylesheet location
+                    center: [-95.7129, 37.0902], 
+                    zoom: 3
+            });
+            //////////////////////////////////////////////////////////
+            
+            
+            
+            /////////////////////////////////////////////////////////
+            ///    Code for styles:                               ///
+            /////////////////////////////////////////////////////////
+            
+            const dataStyle = [[
+                                      "match",["get", "SIC1"],
+                                      ["2032","2034","2035","2099","2092","2091",
+                                       "2086","2079","2085","2048","2037","2051"],
+                                      "#577590",
+                                      ["2259","2281","2321","2340","2396","2399",
+                                       "2421","2436","2621","2679","2721","2819",
+                                       "2821","2822","2834","2836","2865","2869",
+                                       "2873","2875","2879","2891","2893","3011",
+                                       "3052","3069","3081","3083","3086","3089",
+                                       "3140","3264","3273","3297"],
+                                      "#90be6d",
+                                      ["3312","3315","3325","3341","3354","3357",
+                                       "3363","3429","3433","3440","3452","3469",
+                                       "3471","3495","3498"],
+                                      "#f9c74f",
+                                      ["3531","3535","3537","3541","3542","3544",
+                                       "3545","3554","3559","3567","3569","3571",
+                                       "3577","3585","3592","3593"],
+                                      "#f8961e",
+                                      ["3613","3625","3631","3643","3651","3663",
+                                       "3672","3674","3675","3677","3679","3695"],
+                                      "#f3722c",
+                                      ["3711", "3714", "3751"],
+                                      "#f94144",
+                                      "#43aa8b"
+                                    ], 
+                                    [
+                                    "case",
+                                    ["match",["get", "YEAR"],
+                                    ["1990", "1991", "1992"],true,false],
+                                    "#72ce27",
+
+                                    ["match",["get", "YEAR"],
+                                    ["1985","1986","1987","1988","1989"],true,false],
+                                    "#95e214",
+
+                                    ["match",["get", "YEAR"],
+                                    ["1980","1981","1982","1983","1984"],true,false],
+                                    "#b8f500",
+
+                                    ["match",["get", "YEAR"],
+                                    ["1975","1976","1977","1978","1979"],true,false],
+                                    "#fff700",
+
+                                    ["match",["get", "YEAR"],
+                                    ["1970","1971","1972","1973","1974"],true,false],
+                                    "#ffe000",
+
+                                    ["match",["get", "YEAR"],
+                                    ["1965","1967","1968","1969"],true,false],
+                                    "#ffc800",
+
+                                    ["match",["get", "YEAR"],
+                                    ["1912", "1954", "1963"],true,false],
+                                    "#ff9900",
+                                    "#ffffff"
+                                    ]
+                                ];
+            
+            var DS = 0;
+            function changeDataStyle() {
+                if (DS == 0) {
+                    DS += 1;
+                    map.setStyle(DML[DM])
+                    addDataLayer();
+                } else {
+                    DS = 0;
+                    map.setStyle(DML[DM])
+                    addDataLayer();
+                }
+            };
+            
+            /////////////////////////////////////////////////////////
+            
+            
+            
+            /////////////////////////////////////////////////////////
+            //             Using a geojson file for now            //
+            /////////////////////////////////////////////////////////
+            
+            function addDataLayer() {
+                
+                // add geojson source
+                map.addSource('ManfPlants', {
+                    'type': 'geojson',
+                    data: './EconJsonFile.geojson',
+                });
+                
+                // add geojson as a layer
+                map.addLayer({
+                    'id': 'plantYears',
+                    'type': 'circle',
+                    'source': 'ManfPlants',
+                    paint: {
+                        'circle-color': dataStyle[DS],
+                    }
+                });
+            };
+            
+            // load data when map is loaded
+            map.on('load', function(){
+                addDataLayer();
+            });
+            
+            //////////////////////////////////////////////////////////
+            
+            
+            
+            //////////////////////////////////////////////////////////
+            //            This chunk handles DarkMode               //
+            //////////////////////////////////////////////////////////
+            var DM = 0;
+            const DML = ['mapbox://styles/mapbox/dark-v11', 'mapbox://styles/mapbox/light-v11'];
+            
+            function darkMode() {
+                
+                if (DM == 0) {
+                    DM = 1;
+                    map.setStyle(DML[DM]);
+                } else {
+                    DM = 0;
+                    map.setStyle(DML[DM]);
+                };
+            };
+            
+            // load data when style is changed
+            map.on('style.load', function () {
+                addDataLayer();
+            });
+            
+            /////////////////////////////////////////////////////////
+            
+            
+            
+            ////////////////////////////////////////////////////////
+            ///     This code is for the slider & functions      ///
+            ////////////////////////////////////////////////////////
+            
+            var slideVal = 0;
+            var playCondition = 0;
+            const yearLi = [
+                '1960', '1961', '1962', '1963', '1964', '1965', '1966', 
+                '1967', '1968', '1969', '1970', '1971', '1972', '1973',
+                '1974', '1975', '1976', '1977', '1978', '1979', '1980', 
+                '1981', '1982', '1983', '1984', '1985', '1986', '1987',
+                '1988', '1989', '1990', '1991', '1992'
+            ];
+            
+            //         Function to filter data by year              //
+            function filterBy(yr) {
+                map.setFilter('plantYears', ['==', 'YEAR', yr]);
+                
+                //set label to the year
+                document.getElementById('yearDisplay').textContent = yr;
+            }
+            
+            /// Allow the user to slide the value and change the map data
+            document.getElementById('slider').addEventListener('input', (e) => {
+                slideVal = parseInt(e.target.value, 10);
+                filterBy(yearLi[slideVal]);
+            })
+            //////////////////////////////////////////////////////////
+            
+            
+            
+            /////////////////////////////////////////////////////////
+            //                Play buttton funciton                //
+            /////////////////////////////////////////////////////////
+            function runTimer(){
+                timer = setInterval(myTimer, timervalue);
+            }
+            
+            // Checks if animation is playing, if so 
+            function myFunction() {                
+                if (playCondition == 0) {
+                    runTimer();
+                    playCondition = 1;
+                }
+                else {
+                    clearInterval(timer);
+                    playCondition = 0;
+                }
+            }
+            
+            function myTimer() {
+                filterBy(yearLi[slideVal]);
+                document.getElementById('slider').value = slideVal;
+                slideVal += 1;
+                if (slideVal == 33) {
+                    slideVal = 0;
+                    }
+                }
+            //////////////////////////////////////////////////////////
+            
+            
+            
+            /////////////////////////////////////////////////////////
+            //          Code for chaning animation speeds          //
+            /////////////////////////////////////////////////////////
+            const timervalues = [100, 500, 7500, 1000];
+            var timervalue = timervalues[0];
+            var timercounter = 0;
+            
+            function changeSpeed() {
+                timervalue = timervalues[timercounter];
+                clearInterval(timer);
+                runTimer();
+                timercounter += 1;
+                if (timercounter == 4) {
+                    timercounter = 0;
+                }
+            }
+            //////////////////////////////////////////////////////////
+            
+            
+        </script>
+    </body>
+</html>
