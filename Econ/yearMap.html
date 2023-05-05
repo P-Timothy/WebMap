@@ -46,12 +46,12 @@
         .LegendContainer {
             position: absolute;
             background-color: #fff;
-            bottom: 0;
+            bottom: 40px;
             width: 300px;
-            height: 200px;
+            height: 175px;
         }
         .legendItem {
-            margin: 0px;
+            margin: 10px;
             display:inline-block;
             margin: 2px;
         }
@@ -75,6 +75,16 @@
         }
         .miscManf {
             color:#43aa8b ;
+        }
+        #creds {
+            position: absolute;
+            background-color: #fff;
+            top: 0;
+            right: 0;
+            width: 235px;
+        }
+        .creator {
+            
         }
     </style>
     </head>
@@ -109,6 +119,11 @@
             </div>
             <br>
             <div class="legendItem">
+                <span class="miscManf">&#11044;</span>
+                <span class="layerDescription">Misc. (sic: 37+, without Auto.)</span>
+            </div>
+            <br>
+            <div class="legendItem">
                 <span class="metals">&#11044;</span>
                 <span class="layerDescription">Metal Products (sic: 3312-3498)</span>
             </div>
@@ -127,13 +142,11 @@
                 <span class="auto">&#11044;</span>
                 <span class="layerDescription">Automotives (sic: 3711,3714, 3751)</span>
             </div>
-            <br>
-            <div class="legendItem">
-                <span class="miscManf">&#11044;</span>
-                <span class="layerDescription">Misc. (sic: 37+, without Auto.)</span>
-            </div>
         </div>
         
+        <div id="creds"> 
+            <span class='creator'>Creator: P. Timothy Young Schragel</span>
+        </div>
         
         <script>
             
@@ -145,7 +158,7 @@
             //  load map  //
             var map = new mapboxgl.Map({
                 container: 'map', // container id
-                style: 'mapbox://styles/mapbox/dark-v11',  // stylesheet location
+                style: 'mapbox://styles/mapbox/light-v11',  // stylesheet location
                     center: [-95.7129, 37.0902], 
                     zoom: 3
             });
@@ -220,7 +233,7 @@
             var DS = 0;
             function changeDataStyle() {
                 if (DS == 0) {
-                    DS += 1;
+                    DS = 1;
                     map.setStyle(DML[DM])
                     addDataLayer();
                 } else {
@@ -270,7 +283,7 @@
             //            This chunk handles DarkMode               //
             //////////////////////////////////////////////////////////
             var DM = 0;
-            const DML = ['mapbox://styles/mapbox/dark-v11', 'mapbox://styles/mapbox/light-v11'];
+            const DML = ['mapbox://styles/mapbox/light-v11', 'mapbox://styles/mapbox/dark-v11'];
             
             function darkMode() {
                 
@@ -357,16 +370,16 @@
             /////////////////////////////////////////////////////////
             //          Code for chaning animation speeds          //
             /////////////////////////////////////////////////////////
-            const timervalues = [100, 500, 7500, 1000];
-            var timervalue = timervalues[0];
-            var timercounter = 0;
+            const timervalues = [100, 500, 1000];
+            var timervalue = timervalues[1];
+            var timercounter = 1;
             
             function changeSpeed() {
                 timervalue = timervalues[timercounter];
                 clearInterval(timer);
                 runTimer();
                 timercounter += 1;
-                if (timercounter == 4) {
+                if (timercounter == 3) {
                     timercounter = 0;
                 }
             }
