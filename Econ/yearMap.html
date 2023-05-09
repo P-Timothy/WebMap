@@ -24,12 +24,12 @@
         <div id="map"></div>
         
         <div id='userInterface'>
-            <button id="clusterGroup" onclick="darkMode()">Dark/Light</button>
-            <button id='speedSetting' onclick="changeSpeed()">Change Speed</button>
-            <br>
-            <button onclick="myFunction()">Play/Pause</button>
+            <button class='button' onclick="myFunction()">Play/Pause</button>
             <input id="slider" type="range" min="0" max="32" step="1" value="0">
             <label id='yearDisplay'>1960</label>
+            <br>
+            <button class='button' id='speedSetting' onclick="changeSpeed()">Change Speed</button>
+            <button class='button' id="clusterGroup" onclick="darkMode()">Dark/Light</button>
              <!-- <button id='changeStyle' onclick="changeDataStyle()">Change Style</button> -->
              <!-- <button id='reloadData' onclick="reloadMapData()">Reload Map</button> -->
         </div>
@@ -77,7 +77,7 @@
         </div>
         
         <div id="creds"> 
-            <span class='creator'>Creator: P. Timothy Young Schragel</span>
+            <span class='creator'>Author: P. Timothy Young Schragel</span>
         </div>
         
         <script>
