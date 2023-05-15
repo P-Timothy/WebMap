@@ -7,6 +7,8 @@
     <link href="https://api.mapbox.com/mapbox-gl-js/v2.2.0/mapbox-gl.css" rel="stylesheet">
     <script src="https://api.mapbox.com/mapbox-gl-js/v2.2.0/mapbox-gl.js"></script>
     <link rel="stylesheet" href="yearMapC.css">
+    <link href="nouislider.css" rel="stylesheet">
+    <script src="nouislider.js"></script>
         <!-- https://p-timothy.github.io/WebMap/Econ/yearMap.html -->
     <style>
         body { 
@@ -23,36 +25,62 @@
         
         <div id="map"></div>
         
-        <div id='userInterface'>
-            <button id="clusterGroup" onclick="darkMode()">Dark/Light</button>
+        <!-- <div id='userInterface'>
+            <button onclick="myFunction()">Play/Pause</button>
+            <input id="yrSlider" type="range" min="0" max="32" step="1" value="0">
+            <span id='yearDisplay'>1960</span>
             <button id='speedSetting' onclick="changeSpeed()">Change Speed</button>
             <br>
-            <button onclick="myFunction()">Play/Pause</button>
-            <input id="slider" type="range" min="0" max="32" step="1" value="0">
-            <label id='yearDisplay'>1960</label>
-             <!-- <button id='changeStyle' onclick="changeDataStyle()">Change Style</button> -->
-             <!-- <button id='reloadData' onclick="reloadMapData()">Reload Map</button> -->
+            
+            <button id="darkMode" onclick="darkMode()">Dark/Light</button>
+            
+            <input type="number" id='yrRangeInput' min='1' max='10' step='1' value='1'> 
+            <input id="yrRangeSlider" type="range" min="1" max="15" step="1" value="1">
+            <span id='visYearNumber'>5</span> 
+            
+        </div> -->
+        
+        <div id='userControl'>
+            <div id="timePlayer">
+                <button onclick="go()">Play</button>
+                <span id="minYear">1960</span>
+                <div class="slider-styled" id="slider"></div>
+                <span id="maxYear">1992</span>
+                <!-- <button onclick='speed()'>Speed</button>-->
+                <br>
+                <!-- <span>Span: <span id="spanID"></span> years</span> -->
+            </div>
+            
         </div>
         
+        <!--     THIS IS THE CODE FOR THE JV FILTERS, NOT WORKING RN SO THEYRE HIDDEN
+        <div id="jvFilter">
+            <input type='checkbox' id='all' name='all' onclick='filterbytype(0)' checked>
+            <label for="all">All</label><br>
+            <input type='checkbox' id='jv' name='jointv' onclick='filterbytype(1)'>
+            <label for="jointv">Joint Venture</label><br>
+            <input type='checkbox' id='aq' name='acqu' onclick='filterbytype(2)'>
+            <label for="acqu">acquisition</label><br>
+            <input type='checkbox' id='new' name='newplt' onclick='filterbytype(3)'>
+            <label for="newplt">New Plant</label><br>
+        </div>
+        -->
         
         <!-- This div is used to create a legend: Span class color is changed in css under 'renter' and 'owner'  -->
         <div class="LegendContainer">
-            <div class="legendItem">
-                <span class="layerDescription">Note: Some data hidden due to overlap issues</span>
-            </div>
             <div class="legendItem">
                 <span class="food">&#11044;</span>
                 <span class="layerDescription">Food (sic: 2032-2099)</span>
             </div>
             <br>
             <div class="legendItem">
-                <span class="rawMaterials">&#11044;</span>
-                <span class="layerDescription">Textiles/Raw Materials (sic: 2259-3297)</span>
+                <span class="miscManf">&#11044;</span>
+                <span class="layerDescription">Misc. (sic: 37+, without Auto.)</span>
             </div>
             <br>
             <div class="legendItem">
-                <span class="miscManf">&#11044;</span>
-                <span class="layerDescription">Misc. (sic: 37+, without Auto.)</span>
+                <span class="rawMaterials">&#11044;</span>
+                <span class="layerDescription">Textiles/Raw Materials (sic: 2259-3297)</span>
             </div>
             <br>
             <div class="legendItem">
@@ -76,9 +104,6 @@
             </div>
         </div>
         
-        <div id="creds"> 
-            <span class='creator'>Creator: P. Timothy Young Schragel</span>
-        </div>
         
         <script>
             
@@ -97,83 +122,59 @@
             //////////////////////////////////////////////////////////
             
             
-            
             /////////////////////////////////////////////////////////
             ///    Code for styles:                               ///
             /////////////////////////////////////////////////////////
             
-            const dataStyle = [[
-                                      "match",["get", "SIC1"],
-                                      ["2032","2034","2035","2099","2092","2091",
-                                       "2086","2079","2085","2048","2037","2051"],
-                                      "#577590",
-                                      ["2259","2281","2321","2340","2396","2399",
-                                       "2421","2436","2621","2679","2721","2819",
-                                       "2821","2822","2834","2836","2865","2869",
-                                       "2873","2875","2879","2891","2893","3011",
-                                       "3052","3069","3081","3083","3086","3089",
-                                       "3140","3264","3273","3297"],
-                                      "#90be6d",
-                                      ["3312","3315","3325","3341","3354","3357",
-                                       "3363","3429","3433","3440","3452","3469",
-                                       "3471","3495","3498"],
-                                      "#f9c74f",
-                                      ["3531","3535","3537","3541","3542","3544",
-                                       "3545","3554","3559","3567","3569","3571",
-                                       "3577","3585","3592","3593"],
-                                      "#f8961e",
-                                      ["3613","3625","3631","3643","3651","3663",
-                                       "3672","3674","3675","3677","3679","3695"],
-                                      "#f3722c",
-                                      ["3711", "3714", "3751"],
-                                      "#f94144",
-                                      "#43aa8b"
-                                    ], 
-                                    [
-                                    "case",
-                                    ["match",["get", "YEAR"],
-                                    ["1990", "1991", "1992"],true,false],
-                                    "#72ce27",
-
-                                    ["match",["get", "YEAR"],
-                                    ["1985","1986","1987","1988","1989"],true,false],
-                                    "#95e214",
-
-                                    ["match",["get", "YEAR"],
-                                    ["1980","1981","1982","1983","1984"],true,false],
-                                    "#b8f500",
-
-                                    ["match",["get", "YEAR"],
-                                    ["1975","1976","1977","1978","1979"],true,false],
-                                    "#fff700",
-
-                                    ["match",["get", "YEAR"],
-                                    ["1970","1971","1972","1973","1974"],true,false],
-                                    "#ffe000",
-
-                                    ["match",["get", "YEAR"],
-                                    ["1965","1967","1968","1969"],true,false],
-                                    "#ffc800",
-
-                                    ["match",["get", "YEAR"],
-                                    ["1912", "1954", "1963"],true,false],
-                                    "#ff9900",
-                                    "#ffffff"
-                                    ]
-                                ];
+            var playCon = 0;
             
-            var DS = 0;
-            function changeDataStyle() {
-                if (DS == 0) {
-                    DS = 1;
-                    map.setStyle(DML[DM])
-                    addDataLayer();
-                } else {
-                    DS = 0;
-                    map.setStyle(DML[DM])
-                    addDataLayer();
-                }
-            };
+            const yearLi = [
+                1960, 1961, 1962, 1963, 1964, 1965, 1966, 
+                1967, 1968, 1969, 1970, 1971, 1972, 1973,
+                1974, 1975, 1976, 1977, 1978, 1979, 1980, 
+                1981, 1982, 1983, 1984, 1985, 1986, 1987,
+                1988, 1989, 1990, 1991, 1992
+            ];
+            
+            const dataStyle = [[
+                              "match",
+                              ["get", "SIC1"],
+                              0,
+                              [
+                                "interpolate",
+                                ["linear"],
+                                ["get", "SIC1"],
+                                2011,"#577590",
+                                2099,"#577590",
+                                2100,"#90be6d",
+                                3299,"#90be6d",
+                                3300,"#f9c74f",
+                                3499,"#f9c74f",
+                                3500,"#f8961e",
+                                3599,"#f8961e",
+                                3600,"#f3722c",
+                                3700,"#43aa8b",
+                                3999,"#000000"
+                              ],
+                              [
+                                "interpolate",
+                                ["linear"],
+                                ["get", "SIC1"],
+                                2011,"#577590",
+                                2099,"#577590",
+                                2100,"#90be6d",
+                                3299,"#90be6d",
+                                3300,"#f9c74f",
+                                3499,"#f9c74f",
+                                3500,"#f8961e",
+                                3599,"#f8961e",
+                                3600,"#f3722c",
+                                3700,"#43aa8b",
+                                3999,"#000000"
+                              ]
+                            ]
+                    ];
+            
             
             /////////////////////////////////////////////////////////
             
@@ -188,7 +189,7 @@
                 // add geojson source
                 map.addSource('ManfPlants', {
                     'type': 'geojson',
-                    data: './EconJsonFile.geojson',
+                    data: './EconUpdated.geojson',
                 });
                 
                 // add geojson as a layer
@@ -197,7 +198,7 @@
                     'type': 'circle',
                     'source': 'ManfPlants',
                     paint: {
-                        'circle-color': dataStyle[DS],
+                        'circle-color': dataStyle[0],
                     }
                 });
             };
@@ -235,88 +236,128 @@
             
             /////////////////////////////////////////////////////////
             
-            
-            
-            ////////////////////////////////////////////////////////
-            ///     This code is for the slider & functions      ///
-            ////////////////////////////////////////////////////////
-            
-            var slideVal = 0;
-            var playCondition = 0;
-            const yearLi = [
-                '1960', '1961', '1962', '1963', '1964', '1965', '1966', 
-                '1967', '1968', '1969', '1970', '1971', '1972', '1973',
-                '1974', '1975', '1976', '1977', '1978', '1979', '1980', 
-                '1981', '1982', '1983', '1984', '1985', '1986', '1987',
-                '1988', '1989', '1990', '1991', '1992'
-            ];
-            
-            //         Function to filter data by year              //
-            function filterBy(yr) {
-                map.setFilter('plantYears', ['==', 'YEAR', yr]);
+
                 
-                //set label to the year
-                document.getElementById('yearDisplay').textContent = yr;
-            }
-            
-            /// Allow the user to slide the value and change the map data
-            document.getElementById('slider').addEventListener('input', (e) => {
-                slideVal = parseInt(e.target.value, 10);
-                filterBy(yearLi[slideVal]);
-            })
-            //////////////////////////////////////////////////////////
-            
-            
-            
             /////////////////////////////////////////////////////////
-            //                Play buttton funciton                //
+            //                    No UI Slider                     //
             /////////////////////////////////////////////////////////
-            function runTimer(){
-                timer = setInterval(myTimer, timervalue);
-            }
+            var slider = document.getElementById('slider');
+            var select = document.getElementById('spanID');
+            var minvalue = 0;
+            var maxvalue = 32;
             
-            // Checks if animation is playing, if so 
-            function myFunction() {                
-                if (playCondition == 0) {
+            var slideEvList = noUiSlider.create(slider, {
+                start: [0, 32],
+                connect: true,
+                range: {
+                    'min': 0,
+                    'max': 32
+                },
+                step: 1,
+                behaviour: 'tap-drag',
+            });
+                slideEvList.on('update', function(values){
+                    minvalue = Number(values[0]);
+                    minvalue = yearLi[minvalue];
+                    maxvalue = Number(values[1]);
+                    maxvalue = yearLi[maxvalue];
+                    filters = [minvalue, maxvalue]; //, plantTypeFilter()
+                    
+                    map.setFilter('plantYears', ['all', ['<=', 'YEAR', maxvalue], ['>=', 'YEAR', minvalue]]);
+                    
+                    yearTextContent(filters);
+                });
+            
+            slider.noUiSlider.on('update', function (values, handle) {
+                var value = values[handle];
+                
+                select.textContent = Math.round(values[1]-values[0]);
+                
+                if (handle) {
+                    inputNumber.value = value;
+                } else {
+                    select.value = Math.round(values[1]-values[0]);
+                };
+            });
+            
+            select.addEventListener('change', function () {
+                slider.noUiSlider.set([this.value, null]);
+            });
+            
+            
+            // play button function
+            function go() {
+                if (playCon == 0) {
                     runTimer();
-                    playCondition = 1;
-                }
-                else {
+                    playCon = 1;
+                } else {
                     clearInterval(timer);
-                    playCondition = 0;
+                    playCon = 0;
                 }
-            }
+            };
             
+            // call the timer Function 
+            function runTimer(){
+                timer = setInterval(myTimer, 1000);
+            };
+            // timer funciton, updates slider values
             function myTimer() {
-                filterBy(yearLi[slideVal]);
-                document.getElementById('slider').value = slideVal;
-                slideVal += 1;
-                if (slideVal == 33) {
-                    slideVal = 0;
-                    }
-                }
-            //////////////////////////////////////////////////////////
+                var years = slider.noUiSlider.get();
+                var minyears = Number(years[0]) + 1;
+                var maxyears = Number(years[1]) + 1;
+                
+                if (maxyears >= 32){
+                    go();
+                };
+                
+                filterFunc([minyears, maxyears]);
+                
+                slider.noUiSlider.set([minyears, maxyears]);
+            };
             
+            function filterFunc(yer){
+                var bottomYear = Number(yearLi[yer[0]]);
+                bottomYear = ['<=', 'YEAR', bottomYear];
+                var topYear = Number(yearLi[yer[1]]);
+                topYear = ['>=', 'YEAR', topYear];
+                
+                filter = [bottomYear, topYear];
+                
+                map.setFilter('plantYears', ['all', filter]);
+
+            };
+                        
+            function yearTextContent(heldValues) {
+                document.getElementById('maxYear').textContent = Number(heldValues[1]);
+                document.getElementById('minYear').textContent = Number(heldValues[0]);
+            }
             
+            function plantTypeFilter() {
+                
+            };
             
-            /////////////////////////////////////////////////////////
-            //          Code for chaning animation speeds          //
-            /////////////////////////////////////////////////////////
-            const timervalues = [100, 500, 1000];
-            var timervalue = timervalues[1];
-            var timercounter = 1;
-            
-            function changeSpeed() {
-                timervalue = timervalues[timercounter];
-                clearInterval(timer);
-                runTimer();
-                timercounter += 1;
-                if (timercounter == 3) {
-                    timercounter = 0;
+            function filterbytype(index) {
+                if (index == 1) {
+                    document.getElementById('all').checked = false;
+                    document.getElementById('aq').checked = false;
+                    document.getElementById('new').checked = false;
+                } else if (index == 2) {
+                    document.getElementById('all').checked = false;
+                    document.getElementById('jv').checked = false;
+                    document.getElementById('new').checked = false;
+                } else if (index == 3) {                    
+                    document.getElementById('all').checked = false;
+                    document.getElementById('aq').checked = false;
+                    document.getElementById('jv').checked = false;
+                } else if (index == 0) {
+                    document.getElementById('jv').checked = false;
+                    document.getElementById('aq').checked = false;
+                    document.getElementById('new').checked = false;
                 }
             }
-            //////////////////////////////////////////////////////////
             
+            
+           
             
         </script>
     </body>

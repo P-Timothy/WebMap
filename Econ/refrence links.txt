@@ -1,0 +1,6 @@
+"refrence links"
+
+Slider - https://refreshless.com/nouislider/
+Slide Example - https://nsrc.org/activities/map
+
+Fonts  - https://fonts.google.com/?preview.text=My%20Map%20Title&preview.text_type=custom 

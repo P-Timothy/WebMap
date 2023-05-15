@@ -1,23 +1,103 @@
-#userInterface { position: absolute; width: 25%; top: 0; left: 0; padding: 10px;
-                 background-color: #fff; box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
-                 border-radius: 3px; padding: 10px; margin-bottom: 10px; 
-                 width: 225px;
+#userControl {
+    position: absolute;
+    top: 1%;
+    left: 25%;
+    background-color: #fff;
+    padding: 10px;
+    width: 50%;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+    border-radius: 3px;
 }
+
 #slider { 
-    left: 5%;
+    position: absolute;
+    align-content: center;
+    top: 15px;
+    left: 100px;
+    width: 350PX;
+    padding: 0;
+    height: 10px;
 }
-#clusterGroup { 
-    top: 20px; 
+#minYear {
+    margin-left: 0px;
+}
+#maxYear {
+    margin-left: 375PX;
+}
+
+
+.slider-styled,
+.slider-styled .noUi-handle {
+    box-shadow: none;
+}
+/* Hide markers on slider handles */
+.slider-styled .noUi-handle::before,
+.slider-styled .noUi-handle::after {
+    display: none;
+}
+.slider-styled .noUi-handle .noUi-touch-area {
+    border: 1px solid transparent;
+    position: absolute;
+    top: -10px;
+    left: -10px;
+    right: -10px;
+    bottom: -10px;
+    width: auto;
+    height: auto;
+}
+
+
+#jvFilter {
+    position: absolute;
+    bottom: 10%;
+    right: 10%;
+    background-color: #fff;
+    width: 120px;
+}
+
+
+#userInterface { position: absolute; width: 50%; top: 10px; left: 25%;  padding: 10px;
+                 background-color: #fff; box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+                 border-radius: 3px; padding: 10px; margin-bottom: 10px; }
+
+
+
+
+#slider .noUi-connect {
+    background: #c0392b;
+}
+
+#slider .noUi-handle {
+    height: 18px;
+    width: 18px;
+    top: -5px;
+    right: -9px; /* half the width */
+    border-radius: 9px;
+}
+
+
+#darkMode { 
+    top: 0px; 
+    margin-left: 90px;
 }
 #yearDisplay {
     font-size: 20px;
-    margin-left: 130px;
+    margin-left: 0px;
+    margin-top: 0px;
+}
+#yrRangeInput {
+    margin-top: 5px;
+    margin-bottom: 5px;
+    width: 30px;
 }
 #speedSetting {
-    margin-left: 22px;
+    margin-left: 10px;
 }
 #changeStyle {
     margin-top: 10px;
+}
+#yrRangeSlider {
+    margin-left: 30px;
 }
 #reloadData {
     margin-left: 5px;
@@ -33,7 +113,7 @@
     background-color: #fff;
     bottom: 40px;
     width: 300px;
-    height: 200px;
+    height: 180px;
 }
 .legendItem {
     margin: 10px;
@@ -67,7 +147,4 @@
     top: 0;
     right: 0;
     width: 235px;
-}
-.creator {
-
 }
