@@ -1,20 +1,19 @@
 #userControl {
     position: absolute;
     top: 1%;
-    left: 25%;
+    left: 20%;
     background-color: #fff;
     padding: 10px;
-    width: 50%;
+    width: 60%;
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
     border-radius: 3px;
 }
 
 #slider { 
     position: absolute;
-    align-content: center;
     top: 15px;
-    left: 100px;
     width: 350PX;
+    left: 150px;
     padding: 0;
     height: 10px;
 }

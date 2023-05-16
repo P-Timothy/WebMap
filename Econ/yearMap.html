@@ -43,9 +43,11 @@
         <div id='userControl'>
             <div id="timePlayer">
                 <button onclick="go()">Play</button>
+                <button onclick='lockbottom()'>Lock</button>
                 <span id="minYear">1960</span>
                 <div class="slider-styled" id="slider"></div>
                 <span id="maxYear">1992</span>
+                <button onclick='locktop()'>Lock</button>
                 <!-- <button onclick='speed()'>Speed</button>-->
                 <br>
                 <!-- <span>Span: <span id="spanID"></span> years</span> -->
@@ -53,18 +55,8 @@
             
         </div>
         
-        <!--     THIS IS THE CODE FOR THE JV FILTERS, NOT WORKING RN SO THEYRE HIDDEN
-        <div id="jvFilter">
-            <input type='checkbox' id='all' name='all' onclick='filterbytype(0)' checked>
-            <label for="all">All</label><br>
-            <input type='checkbox' id='jv' name='jointv' onclick='filterbytype(1)'>
-            <label for="jointv">Joint Venture</label><br>
-            <input type='checkbox' id='aq' name='acqu' onclick='filterbytype(2)'>
-            <label for="acqu">acquisition</label><br>
-            <input type='checkbox' id='new' name='newplt' onclick='filterbytype(3)'>
-            <label for="newplt">New Plant</label><br>
-        </div>
-        -->
+        
+        <nav id="filter-group"></nav>        
         
         <!-- This div is used to create a legend: Span class color is changed in css under 'renter' and 'owner'  -->
         <div class="LegendContainer">
@@ -245,6 +237,9 @@
             var select = document.getElementById('spanID');
             var minvalue = 0;
             var maxvalue = 32;
+            var additionalFilter = ['>=', 'SIC1', 0];
+            var LockBottom = false;
+            var LockTop = false;
             
             var slideEvList = noUiSlider.create(slider, {
                 start: [0, 32],
@@ -263,7 +258,7 @@
                     maxvalue = yearLi[maxvalue];
                     filters = [minvalue, maxvalue]; //, plantTypeFilter()
                     
-                    map.setFilter('plantYears', ['all', ['<=', 'YEAR', maxvalue], ['>=', 'YEAR', minvalue]]);
+                    map.setFilter('plantYears', ['all', ['<=', 'YEAR', maxvalue], ['>=', 'YEAR', minvalue], additionalFilter]);
                     
                     yearTextContent(filters);
                 });
@@ -303,8 +298,16 @@
             // timer funciton, updates slider values
             function myTimer() {
                 var years = slider.noUiSlider.get();
-                var minyears = Number(years[0]) + 1;
-                var maxyears = Number(years[1]) + 1;
+                if (LockBottom == true) {
+                    var minyears = Number(years[0]);
+                } else {
+                    var minyears = Number(years[0]) + 1;
+                }
+                if (LockTop == true) {
+                    var maxyears = Number(years[1]);
+                } else {
+                    var maxyears = Number(years[1]) + 1;
+                }
                 
                 if (maxyears >= 32){
                     go();
@@ -330,17 +333,33 @@
             function yearTextContent(heldValues) {
                 document.getElementById('maxYear').textContent = Number(heldValues[1]);
                 document.getElementById('minYear').textContent = Number(heldValues[0]);
-            }
-            
-            function plantTypeFilter() {
-                
             };
+            
+            
+            function lockbottom() {
+                if (LockBottom==true) {
+                    LockBottom = false;
+                } else {
+                    LockBottom = true;
+                }
+            };
+            
+            function locktop() {
+                if (LockTop==true) {
+                    LockTop = false;
+                } else {
+                    LockTop = true;
+                }
+            };
+            
+            
             
             function filterbytype(index) {
                 if (index == 1) {
                     document.getElementById('all').checked = false;
                     document.getElementById('aq').checked = false;
                     document.getElementById('new').checked = false;
+                    additionalFilter = ['==', ['get','JV'], true];
                 } else if (index == 2) {
                     document.getElementById('all').checked = false;
                     document.getElementById('jv').checked = false;
@@ -353,8 +372,12 @@
                     document.getElementById('jv').checked = false;
                     document.getElementById('aq').checked = false;
                     document.getElementById('new').checked = false;
+                    additionalFilter = ['>=','SIC1', 0]
                 }
             }
+            
+            
+            
             
             
            
