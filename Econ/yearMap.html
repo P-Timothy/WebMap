@@ -67,7 +67,7 @@
         
         <div id="SIC1filter">
             <label form="sicVal">SIC Code:</label>
-            <input type="text" id="sicVal" name="sicVal" list="options">
+            <input type="text" id="sicVal" name="sicVal" list="options" onclick='sicValClick()'>
             <datalist id="options">
                 <option value="Food"></option>
                 <option value="Raw Materials"></option>
@@ -405,7 +405,7 @@
                 var inputVal = document.getElementById('sicVal').value;
                 if (inputVal == '') {
                     sicFilter = ['>=', 'SIC1', 0];
-                    sicFilterMax = ['==', 'SIC1', 0];    
+                    sicFilterMax = ['>=', 'SIC1', 0];    
                 } else if (inputVal == 'Food') {
                     sicFilter = ['>=', 'SIC1', 2000];
                     sicFilterMax = ['<=', 'SIC1', 2100];                    
@@ -435,7 +435,9 @@
                 map.setFilter('plantYears', ['all', maxYearFilter, minYearFilter, additionalFilter, sicFilter, sicFilterMax]);
             }
            
-            
+            function sicValClick() {
+                document.getElementById('sicVal').value = '';
+            }
             
             
             
