@@ -48,10 +48,16 @@
 
 #jvFilter {
     position: absolute;
-    bottom: 10%;
+    bottom: 40px;
     right: 10%;
     background-color: #fff;
     width: 120px;
+}
+#SIC1filter {
+    position: absolute;
+    right: 10%;
+    bottom: 120px;
+    background-color: #fff;
 }
 
 
