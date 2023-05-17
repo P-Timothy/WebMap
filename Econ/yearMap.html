@@ -52,12 +52,35 @@
                 <br>
                 <!-- <span>Span: <span id="spanID"></span> years</span> -->
             </div>
-            
 
         </div>
         
+        <div id='jvFilter'>
+            <input type='checkbox' id="all" name="all" onclick="checkbox(0)" checked>
+            <label for='all'>All</label><br>
+            <input type='checkbox' id="jv" name="jv" onclick="checkbox(1)">
+            <label for='jv'>Joint Venture</label><br>
+            <input type='checkbox' id="aq" name="aq" onclick="checkbox(2)">
+            <label for='aq'>Acquisition</label><br>
+            <input type='checkbox' id="new" name="new" onclick="checkbox(3)">
+            <label for='new'>New</label><br>
+        </div>
         
-        <nav id="filter-group"></nav>        
+        <div id="SIC1filter">
+            <label form="sicVal">SIC Code:</label>
+            <input type="text" id="sicVal" name="sicVal" list="options">
+            <datalist id="options">
+                <option value="Food"></option>
+                <option value="Raw Materials"></option>
+                <option value="Metal"></option>
+                <option value="Machinery"></option>
+                <option value="Electronics"></option>
+                <option value="Automotives"></option>
+                <option value="Misc"></option>
+            </datalist>
+            <button onclick="sicGo()">Show</button>
+            
+        </div>
         
         <!-- This div is used to create a legend: Span class color is changed in css under 'renter' and 'owner'  -->
         <div class="LegendContainer">
@@ -239,8 +262,13 @@
             var minvalue = 0;
             var maxvalue = 32;
             var additionalFilter = ['>=', 'SIC1', 0];
+            var minYearFilter = ['<=', 'YEAR', 0];
+            var maxYearFilter = ['>=', 'YEAR', 4000];
+            var sicFilter = ['>=', 'SIC1', 0];
+            var sicFilterMax = ['>=', 'SIC1', 0];
             var LockBottom = false;
             var LockTop = false;
+            
             
             var slideEvList = noUiSlider.create(slider, {
                 start: [0, 32],
@@ -255,11 +283,15 @@
                 slideEvList.on('update', function(values){
                     minvalue = Number(values[0]);
                     minvalue = yearLi[minvalue];
+                    minYearFilter = ['>=', 'YEAR', minvalue]
+                    
                     maxvalue = Number(values[1]);
                     maxvalue = yearLi[maxvalue];
-                    filters = [minvalue, maxvalue]; //, plantTypeFilter()
+                    maxYearFilter = ['<=', 'YEAR', maxvalue]
                     
-                    map.setFilter('plantYears', ['all', ['<=', 'YEAR', maxvalue], ['>=', 'YEAR', minvalue], additionalFilter]);
+                    
+                    
+                    map.setFilter('plantYears', ['all', maxYearFilter, minYearFilter, additionalFilter, sicFilter, sicFilterMax]);
                     
                     yearTextContent(filters);
                 });
@@ -314,22 +346,9 @@
                     go();
                 };
                 
-                filterFunc([minyears, maxyears]);
-                
                 slider.noUiSlider.set([minyears, maxyears]);
             };
             
-            function filterFunc(yer){
-                var bottomYear = Number(yearLi[yer[0]]);
-                bottomYear = ['<=', 'YEAR', bottomYear];
-                var topYear = Number(yearLi[yer[1]]);
-                topYear = ['>=', 'YEAR', topYear];
-                
-                filter = [bottomYear, topYear];
-                
-                map.setFilter('plantYears', ['all', filter]);
-
-            };
                         
             function yearTextContent(heldValues) {
                 document.getElementById('maxYear').textContent = Number(heldValues[1]);
@@ -355,28 +374,66 @@
             
             
             
-            function filterbytype(index) {
+            function checkbox(index) {
                 if (index == 1) {
                     document.getElementById('all').checked = false;
                     document.getElementById('aq').checked = false;
                     document.getElementById('new').checked = false;
-                    additionalFilter = ['==', ['get','JV'], true];
+                    additionalFilter = ['==', 'JV', true];
                 } else if (index == 2) {
                     document.getElementById('all').checked = false;
                     document.getElementById('jv').checked = false;
                     document.getElementById('new').checked = false;
+                    additionalFilter = ['==', 'ACQUIRE', true];
                 } else if (index == 3) {                    
                     document.getElementById('all').checked = false;
                     document.getElementById('aq').checked = false;
                     document.getElementById('jv').checked = false;
+                    additionalFilter = ['==', 'NEW', true];
                 } else if (index == 0) {
                     document.getElementById('jv').checked = false;
                     document.getElementById('aq').checked = false;
                     document.getElementById('new').checked = false;
-                    additionalFilter = ['>=','SIC1', 0]
+                    additionalFilter = ['>=','IDNUM', 0];
                 }
+                
+                map.setFilter('plantYears', ['all', maxYearFilter, minYearFilter, additionalFilter, sicFilter, sicFilterMax]);
             }
             
+            function sicGo() {
+                var inputVal = document.getElementById('sicVal').value;
+                if (inputVal == '') {
+                    sicFilter = ['>=', 'SIC1', 0];
+                    sicFilterMax = ['==', 'SIC1', 0];    
+                } else if (inputVal == 'Food') {
+                    sicFilter = ['>=', 'SIC1', 2000];
+                    sicFilterMax = ['<=', 'SIC1', 2100];                    
+                } else if (inputVal == 'Misc') {
+                    sicFilter = ['>=', 'SIC1', 3700];
+                    sicFilterMax = ['<=', 'SIC1', 5000];
+                } else if (inputVal == 'Raw Materials') {
+                    sicFilter = ['>=', 'SIC1', 2200];
+                    sicFilterMax = ['<=', 'SIC1', 3299];
+                } else if (inputVal == 'Metal') {
+                    sicFilter = ['>=', 'SIC1', 3300];
+                    sicFilterMax = ['<=', 'SIC1', 3499];
+                } else if (inputVal == 'Machinery') {
+                    sicFilter = ['>=', 'SIC1', 3500];
+                    sicFilterMax = ['<=', 'SIC1', 3599];
+                } else if (inputVal == 'Electronics') {
+                    sicFilter = ['>=', 'SIC1', 3600];
+                    sicFilterMax = ['<=', 'SIC1', 3699];
+                } else if (inputVal == 'Automotives') {
+                    sicFilter = ['==', 'SIC1', 3711];
+                    sicFilterMax = ['==', 'SIC1', 3714];
+                } else {
+                    sicFilter = ['==', 'SIC1', Number(inputVal)];
+                    sicFilterMax = ['==', 'SIC1', Number(inputVal)];
+                }
+                
+                map.setFilter('plantYears', ['all', maxYearFilter, minYearFilter, additionalFilter, sicFilter, sicFilterMax]);
+            }
+           
             
             
             
