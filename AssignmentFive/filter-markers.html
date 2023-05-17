@@ -155,8 +155,8 @@
 
             // Set bounds to Washington, DC
             var bounds = [
-                [-77.26383, 38.73854], // Southwest coordinates
-                [-76.83569, 39.00114] // Northeast coordinates 
+                [-77.3, 38.7], // Southwest coordinates
+                [-76.8, 39.1] // Northeast coordinates 
             ];
 
             var map = new mapboxgl.Map({
@@ -165,6 +165,7 @@
                 center: [-77.04, 38.907],
                 zoom: 10,
                 minZoom: 10, // pick your own
+                maxZoom: 14,
                 maxBounds: bounds // Sets bounds from variable above
             }); 
 
