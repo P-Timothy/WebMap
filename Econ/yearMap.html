@@ -8,6 +8,9 @@
     <script src="https://api.mapbox.com/mapbox-gl-js/v2.2.0/mapbox-gl.js"></script>
     <link rel="stylesheet" href="yearMapC.css">
     <link href="nouislider.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap" rel="stylesheet">
     <script src="nouislider.js"></script>
         <!-- https://p-timothy.github.io/WebMap/Econ/yearMap.html -->
     <style>
@@ -25,98 +28,165 @@
         
         <div id="map"></div>
         
-        <!-- <div id='userInterface'>
-            <button onclick="myFunction()">Play/Pause</button>
-            <input id="yrSlider" type="range" min="0" max="32" step="1" value="0">
-            <span id='yearDisplay'>1960</span>
-            <button id='speedSetting' onclick="changeSpeed()">Change Speed</button>
-            <br>
-            
-            <button id="darkMode" onclick="darkMode()">Dark/Light</button>
-            
-            <input type="number" id='yrRangeInput' min='1' max='10' step='1' value='1'> 
-            <input id="yrRangeSlider" type="range" min="1" max="15" step="1" value="1">
-            <span id='visYearNumber'>5</span> 
-            
-        </div> -->
-        
-        <div id='userControl'>
-            <div id="timePlayer">
-                <button onclick="go()">Play</button>
-                <button onclick='lockbottom()'>Lock</button>
-                <span id="minYear">1960</span>
-                <div class="slider-styled" id="slider"></div>
-                <span id="maxYear">1992</span>
-                <button onclick='locktop()'>Lock</button>
-                <!-- <button onclick='speed()'>Speed</button>-->
-                <br>
-                <!-- <span>Span: <span id="spanID"></span> years</span> -->
+        <div id='topbar'>
+            <div id="titlebar">
+                <h2 id="title"> Japanese Manufacturing Plants 1912-1992 <sup id='info' onclick="infoBtn()">i</sup> <span id="menue">&vellip;</span> </h2>
+                
             </div>
 
-        </div>
-        
-        <div id='jvFilter'>
-            <input type='checkbox' id="all" name="all" onclick="checkbox(0)" checked>
-            <label for='all'>All</label><br>
-            <input type='checkbox' id="jv" name="jv" onclick="checkbox(1)">
-            <label for='jv'>Joint Venture</label><br>
-            <input type='checkbox' id="aq" name="aq" onclick="checkbox(2)">
-            <label for='aq'>Acquisition</label><br>
-            <input type='checkbox' id="new" name="new" onclick="checkbox(3)">
-            <label for='new'>New</label><br>
-        </div>
-        
-        <div id="SIC1filter">
-            <label form="sicVal">SIC Code:</label>
-            <input type="text" id="sicVal" name="sicVal" list="options" onclick='sicValClick()'>
-            <datalist id="options">
-                <option value="Food"></option>
-                <option value="Raw Materials"></option>
-                <option value="Metal"></option>
-                <option value="Machinery"></option>
-                <option value="Electronics"></option>
-                <option value="Automotives"></option>
-                <option value="Misc"></option>
-            </datalist>
-            <button onclick="sicGo()">Go</button>
+            <div id='userControl'>
+                <div id="timePlayer">
+
+                    <label class="switch" id='Play'>
+                      <input type="checkbox" onclick="go()">
+                      <span class="slider" id='playbutton'>Play</span>
+                    </label>
+
+                    <label class="switch" id="BtmLck">
+                      <input type="checkbox" onclick="lockbottom()">
+                      <span class="slider">Lock</span>
+                    </label>
+
+                    <span id="minYear" class="yearClass">1960</span>
+
+                    <div class="slider-styled" id="slider"></div>
+
+                    <span id="maxYear" class="yearClassR">1992</span>
+
+                    <label class="switch" id="TopLock">
+                      <input type="checkbox" onclick="locktop()">
+                      <span class="slider">Lock</span>
+                    </label>
+                    
+                    <label class="switch" id="FilterButton">
+                      <input type="checkbox" id="FiltersCheckBox" checked>
+                      <span class="slider">Filters</span>
+                    </label>
+                </div>
+            </div>
             
+            <div id="TABBY">
+                <span id='TabsBB'>&minus;</span>
+            </div>
         </div>
         
-        <!-- This div is used to create a legend: Span class color is changed in css under 'renter' and 'owner'  -->
+        
+        
+        <div id='Filters'>
+            <span id="FilterX">&mldr;</span>
+            <div id='jvFilter'>
+                <input type='checkbox' id="jv" name="jv" onclick="settingTheFilter(0)">
+                <label for='jv'>Joint Venture</label><br>
+                
+                <input type='checkbox' id="aq" name="aq" onclick="settingTheFilter(1)">
+                <label for='aq'>Acquisition</label><br>
+                
+                <input type='checkbox' id="new" name="new" onclick="settingTheFilter(2)">
+                <label for='new'>New</label><br>
+            </div>
+
+            <div id="SIC1filter">
+                <label form="sicVal">SIC Code:</label>
+                <input type="text" id="sicVal" name="sicVal" list="options" onclick='sicValClick()'>
+                <datalist id="options">
+                    <option value="Food"></option>
+                    <option value="Raw Materials"></option>
+                    <option value="Metal"></option>
+                    <option value="Machinery"></option>
+                    <option value="Electronics"></option>
+                    <option value="Automotives"></option>
+                    <option value="Misc"></option>
+                </datalist>
+                <button onclick="sicGo()" id="goButton">Go</button>
+
+            </div>
+        </div>
+
+        
+        
+        
+        <!-- Title Info Modal -->
+        <div id="infoModal" class="modal">
+          <!-- Modal content -->
+            <div class="info-modal-content">
+                <span class="close">&times;</span>
+
+                <h2> Additional Info. </h2>
+                
+                <p>
+                    Datasets: 
+                    <br><br>
+                    Points -    The point dataset used for this web map was provided by Bruce Blonigen. It is comprised of single points representing a Japanese Manufacturing plant in the United States of America. This dataset contains additional variables like, SIC number, types of prouducts, year established, locational information, as well as additional infomration of the parent companies. The GeoJson used for this project can be found <a href="https://github.com/p-timothy/WebMap/blob/main/Econ/EconUpdated.geojson"> here</a>.
+                    <br><br>
+                    Right To Work - The state polygons used come from the 2018 census, and were the 20m shapefiles. Data about states right to work was then added to the state polygon layer, this data was found at <a href="https://nrtwc.org/facts/state-right-to-work-timeline-2016/"> The National Right To Work Committee</a>. Visulizing all states with right to work dates before 1980.
+                    <br><br>
+                    Base Map -  The base map currently being used is the standard MapBox Light V11. 
+                </p>
+            </div>
+        </div>
+        
+        <!-- Filter Info Modal -->
+        <div id="filterInfoModal" class="modal">
+          <!-- Modal content -->
+            <div class="info-modal-content">
+
+                <h2> Additional Filter Info. </h2>
+                
+                <p>
+                    Filters: 
+                    <br><br>
+                    Checkboxes - Filter by joint venture, acquisitions, or new manufacturing plants by toggling check box. *Note* Filter is NOT stackable. For the New filter, the data is for all plants that are NOT Acquisitions or Joint Ventures, THIS MEANS IF NEW IS CHECKED ANY OTHER FILTER WILL CLEAR ALL DATA.
+                    <br><br>
+                    SIC filter - Filter by specific code (ex: '3711'), code ranges (ex: '3100 3560'), or predefined range (ex: 'Machinery').
+                    <br><br>
+                </p>
+            </div>
+        </div>
+        
+        
+        
+        
         <div class="LegendContainer">
-            <div class="legendItem">
-                <span class="food">&#11044;</span>
-                <span class="layerDescription">Food (sic: 2032-2099)</span>
+            
+            <div id="Ltitle">
+                <span id='LegTitle'>- Legend: &nbsp;</span>
+                <span class="closeLeg" onclick="LegBtn()" id='legX'>&times;</span>
             </div>
-            <br>
-            <div class="legendItem">
-                <span class="miscManf">&#11044;</span>
-                <span class="layerDescription">Misc. (sic: 37+, without Auto.)</span>
-            </div>
-            <br>
-            <div class="legendItem">
-                <span class="rawMaterials">&#11044;</span>
-                <span class="layerDescription">Textiles/Raw Materials (sic: 2259-3297)</span>
-            </div>
-            <br>
-            <div class="legendItem">
-                <span class="metals">&#11044;</span>
-                <span class="layerDescription">Metal Products (sic: 3312-3498)</span>
-            </div>
-            <br>
-            <div class="legendItem">
-                <span class="machinery">&#11044;</span>
-                <span class="layerDescription">Machinery (sic: 3531-3593)</span>
-            </div>
-            <br>
-            <div class="legendItem">
-                <span class="electronics">&#11044;</span>
-                <span class="layerDescription">Electronics (sic: 3616-3695)</span>
-            </div>
-            <br>
-            <div class="legendItem">
-                <span class="auto">&#11044;</span>
-                <span class="layerDescription">Automotives (sic: 3711,3714, 3751)</span>
+            <div id="LegendItems">
+                <div class="legendItem">
+                    <span class="food">&#11044;</span>
+                    <span class="layerDescription">Food &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (sic: 2032-2099)</span>
+                </div>
+                <br>
+                <div class="legendItem">
+                    <span class="rawMaterials">&#11044;</span>
+                    <span class="layerDescription">Textiles/Raw Materials  (sic: 2259-3297)</span>
+                </div>
+                <br>
+                <div class="legendItem">
+                    <span class="metals">&#11044;</span>
+                    <span class="layerDescription">Metal Products &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (sic: 3312-3498)</span>
+                </div>
+                <br>
+                <div class="legendItem">
+                    <span class="machinery">&#11044;</span>
+                    <span class="layerDescription">Machinery &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (sic: 3531-3593)</span>
+                </div>
+                <br>
+                <div class="legendItem">
+                    <span class="electronics">&#11044;</span>
+                    <span class="layerDescription">Electronics &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (sic: 3616-3695)</span>
+                </div>
+                <br>
+                <div class="legendItem">
+                    <span class="auto">&#11044;</span>
+                    <span class="layerDescription">Automotives &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (sic: 3711-3716)</span>
+                </div>
+                <br>
+                <div class="legendItem">
+                    <span class="miscManf">&#11044;</span>
+                    <span class="layerDescription">Misc. &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (sic: 3700-3999)</span>
+                </div>
             </div>
         </div>
        
@@ -131,18 +201,17 @@
             //  load map  //
             var map = new mapboxgl.Map({
                 container: 'map', // container id
-                style: 'mapbox://styles/mapbox/light-v11',  // stylesheet location
+                style: 'mapbox://styles/ptimmys/cli0j2lad00ul01po2d4t5fyo',  // stylesheet location
                     center: [-95.7129, 37.0902], 
                     zoom: 3
             });
             //////////////////////////////////////////////////////////
-            
+            // mapbox://styles/ptimmys/cli0j2lad00ul01po2d4t5fyo
             
             /////////////////////////////////////////////////////////
             ///    Code for styles:                               ///
             /////////////////////////////////////////////////////////
             
-            var playCon = 0;
             
             const yearLi = [
                 1960, 1961, 1962, 1963, 1964, 1965, 1966, 
@@ -160,35 +229,180 @@
                                 "interpolate",
                                 ["linear"],
                                 ["get", "SIC1"],
-                                2011,"#577590",
-                                2099,"#577590",
-                                2100,"#90be6d",
-                                3299,"#90be6d",
-                                3300,"#f9c74f",
-                                3499,"#f9c74f",
-                                3500,"#f8961e",
-                                3599,"#f8961e",
-                                3600,"#f3722c",
-                                3699,"#f3722c",
-                                3700,"#43aa8b",
-                                3999,"#43aa8b"
+                                2011,"#157CAE",2099,"#157CAE",
+                                  
+                                2100,"#D7AA27",3299,"#D7AA27",
+                                  
+                                3300,"#AF272F",3499,"#AF272F",
+                                  
+                                3500,"#00AEEF",3599,"#00AEEF",
+                                  
+                                3600,"#FFF200",3699,"#FFF200",
+                                  
+                                3700,"#9A9C9F",3710,"#9A9C9F",
+                                  
+                                3711,"#EC008C",3716,"#EC008C",
+                                  
+                                3717,"#9A9C9F",3999,"#9A9C9F"
+                                
                               ],
                               [
                                 "interpolate",
                                 ["linear"],
                                 ["get", "SIC1"],
-                                2011,"#577590",
-                                2099,"#577590",
-                                2100,"#90be6d",
-                                3299,"#90be6d",
-                                3300,"#f9c74f",
-                                3499,"#f9c74f",
-                                3500,"#f8961e",
-                                3599,"#f8961e",
-                                3600,"#f3722c",
-                                3699,"#f3722c",
-                                3700,"#43aa8b",
-                                3999,"#43aa8b"
+                                2011,"#157CAE",2099,"#157CAE",
+                                  
+                                2100,"#D7AA27",3299,"#D7AA27",
+                                  
+                                3300,"#AF272F",3499,"#AF272F",
+                                  
+                                3500,"#00AEEF",3599,"#00AEEF",
+                                  
+                                3600,"#FFF200",3699,"#FFF200",
+                                  
+                                3700,"#9A9C9F",3710,"#9A9C9F",
+                                  
+                                3711,"#EC008C",3716,"#EC008C",
+                                  
+                                3717,"#9A9C9F",3999,"#9A9C9F"
+                              ]
+                            ] , [
+                              "match",
+                              ["get", "SIC1"],
+                              0,
+                              [
+                                "interpolate",
+                                ["linear"],
+                                ["get", "SIC1"],
+                                2011,"#157CAE",2099,"#157CAE",
+                                  
+                                2100,"#D7AA27",3299,"#D7AA27",
+                                  
+                                3300,"#AF272F",3499,"#AF272F",
+                                  
+                                3500,"#00AEEF",3599,"#00AEEF",
+                                  
+                                3600,"#FFF200",3699,"#FFF200",
+                                  
+                                3700,"#9A9C9F",3710,"#9A9C9F",
+                                  
+                                3711,"#EC008C",3716,"#EC008C",
+                                  
+                                3717,"#9A9C9F",3999,"#9A9C9F"
+
+                                
+                              ],
+                              [
+                                "interpolate",
+                                ["linear"],
+                                ["get", "SIC1"],
+                                2011,"#157CAE",2099,"#157CAE",
+                                  
+                                2100,"#D7AA27",3299,"#D7AA27",
+                                  
+                                3300,"#AF272F",3499,"#AF272F",
+                                  
+                                3500,"#00AEEF",3599,"#00AEEF",
+                                  
+                                3600,"#FFF200",3699,"#FFF200",
+                                  
+                                3700,"#9A9C9F",3710,"#9A9C9F",
+                                  
+                                3711,"#EC008C",3716,"#EC008C",
+                                  
+                                3717,"#9A9C9F",3999,"#9A9C9F"
+                              ]
+                            ] , [
+                              "match",
+                              ["get", "SIC1"],
+                              0,
+                              [
+                                "interpolate",
+                                ["linear"],
+                                ["get", "SIC1"],
+                                2011,"#157CAE",2099,"#157CAE",
+                                  
+                                2100,"#D7AA27",3299,"#D7AA27",
+                                  
+                                3300,"#AF272F",3499,"#AF272F",
+                                  
+                                3500,"#00AEEF",3599,"#00AEEF",
+                                  
+                                3600,"#FFF200",3699,"#FFF200",
+                                  
+                                3700,"#9A9C9F",3710,"#9A9C9F",
+                                  
+                                3711,"#EC008C",3716,"#EC008C",
+                                  
+                                3717,"#9A9C9F",3999,"#9A9C9F"
+
+                                
+                              ],
+                              [
+                                "interpolate",
+                                ["linear"],
+                                ["get", "SIC1"],
+                                2011,"#157CAE",2099,"#157CAE",
+                                  
+                                2100,"#D7AA27",3299,"#D7AA27",
+                                  
+                                3300,"#AF272F",3499,"#AF272F",
+                                  
+                                3500,"#00AEEF",3599,"#00AEEF",
+                                  
+                                3600,"#FFF200",3699,"#FFF200",
+                                  
+                                3700,"#9A9C9F",3710,"#9A9C9F",
+                                  
+                                3711,"#EC008C",3716,"#EC008C",
+                                  
+                                3717,"#9A9C9F",3999,"#9A9C9F"
+                              ]
+                            ] , [
+                              "match",
+                              ["get", "SIC1"],
+                              0,
+                              [
+                                "interpolate",
+                                ["linear"],
+                                ["get", "SIC1"],
+                                2011,"#157CAE",2099,"#157CAE",
+                                  
+                                2100,"#D7AA27",3299,"#D7AA27",
+                                  
+                                3300,"#AF272F",3499,"#AF272F",
+                                  
+                                3500,"#00AEEF",3599,"#00AEEF",
+                                  
+                                3600,"#FFF200",3699,"#FFF200",
+                                  
+                                3700,"#9A9C9F",3710,"#9A9C9F",
+                                  
+                                3711,"#EC008C",3716,"#EC008C",
+                                  
+                                3717,"#9A9C9F",3999,"#9A9C9F"
+
+                                
+                              ],
+                              [
+                                "interpolate",
+                                ["linear"],
+                                ["get", "SIC1"],
+                                2011,"#157CAE",2099,"#157CAE",
+                                  
+                                2100,"#D7AA27",3299,"#D7AA27",
+                                  
+                                3300,"#AF272F",3499,"#AF272F",
+                                  
+                                3500,"#00AEEF",3599,"#00AEEF",
+                                  
+                                3600,"#FFF200",3699,"#FFF200",
+                                  
+                                3700,"#9A9C9F",3710,"#9A9C9F",
+                                  
+                                3711,"#EC008C",3716,"#EC008C",
+                                  
+                                3717,"#9A9C9F",3999,"#9A9C9F"
                               ]
                             ]
                     ];
@@ -234,7 +448,7 @@
             //            This chunk handles DarkMode               //
             //////////////////////////////////////////////////////////
             var DM = 0;
-            const DML = ['mapbox://styles/mapbox/light-v11', 'mapbox://styles/mapbox/dark-v11'];
+            const DML = ['mapbox://styles/mapbox/light-v11', 'mapbox://styles/mapbox/dark-v11', 'mapbox://styles/ptimmys/cli0j2lad00ul01po2d4t5fyo'];
             
             function darkMode() {
                 
@@ -247,29 +461,114 @@
                 };
             };
             
-            // load data when style is changed
-            map.on('style.load', function () {
-                addDataLayer();
-            });
+//            // load data when style is changed
+//            map.on('style.load', function () {
+//                addDataLayer();
+//            });
             
             /////////////////////////////////////////////////////////
             
+            var JovFilter = ['>=','IDNUM', 0];
+            var AcqFilter = ['>=','IDNUM', 0];
+            var NewFilter = ['>=','IDNUM', 0];
+            var legendToggle = 1;
+            var playToggle = 1;
+            var filterTog = 1;
+            
+            /// info Modal ///
+            
+            var modal = document.getElementById("infoModal");
+            var Leg = document.getElementById("LegendItems");
+            var LegX = document.getElementById('legX');
+            var tab = document.getElementById('TabsBB');
+            var TABBIE = document.getElementById("TABBY");
+            var usrCon = document.getElementById('userControl');
+            var filCB = document.getElementById('FiltersCheckBox');
+            var filbox = document.getElementById('Filters');
+            var filX = document.getElementById('FilterX');
+            var filHelp = document.getElementById('filterInfoModal');
 
+            // Get the button that opens the modal
+            var btn = document.getElementById("myBtn");
+
+            // Get the <span> element that closes the modal
+            var span = document.getElementsByClassName("close")[0];
+            
+            function infoBtn () {
+                modal.style.display = "block";
+            }
+            
+            
+            span.onclick = function () {
+                modal.style.display = 'none';
+                filHelp.style.display = 'none';
+            }
+            
+            function LegBtn () {
+                if (legendToggle == 1) {
+                    Leg.style.display = 'none';
+                    LegX.innerHTML = '&plus;';
+                    legendToggle = 0;
+                } else {
+                    Leg.style.display = 'block';
+                    LegX.innerHTML = '&times;';
+                    legendToggle = 1;
+                }
+            }
+            
+            TABBIE.onclick = function() {
+                if (playToggle == 0) {
+                    usrCon.style.display = 'block';
+                    TABBIE.style.top = '105px';
+                    playToggle = 1;
+                } else {
+                    usrCon.style.display = 'none';
+                    TABBIE.style.top = '50px';
+                    playToggle = 0;
+                }
+            }
+            
+            filCB.onclick = function() {
+                if (filterTog == 1) {
+                    filbox.style.display = 'none';
+                    filterTog = 0;
+                } else {
+                    filbox.style.display = 'block';
+                    filterTog = 1;
+                }
+            }
+            
+            filX.onclick = function() {
+                filHelp.style.display = "block";
+            }
+            
+            // When the user clicks anywhere outside of the modal, close it
+            window.onclick = function(event) {
+              if (event.target == modal) {
+                modal.style.display = "none";
+              } else if (event.target == filHelp) {
+                filHelp.style.display = "none";
+              }
+            }
                 
             /////////////////////////////////////////////////////////
             //                    No UI Slider                     //
             /////////////////////////////////////////////////////////
+            var playCon = 0;
             var slider = document.getElementById('slider');
             var select = document.getElementById('spanID');
             var minvalue = 0;
             var maxvalue = 32;
-            var additionalFilter = ['>=', 'SIC1', 0];
             var minYearFilter = ['<=', 'YEAR', 0];
             var maxYearFilter = ['>=', 'YEAR', 4000];
             var sicFilter = ['>=', 'SIC1', 0];
             var sicFilterMax = ['>=', 'SIC1', 0];
             var LockBottom = false;
             var LockTop = false;
+            var AqF = 0;
+            var NwF = 0;
+            var JvF = 0;
+            
             
             
             var slideEvList = noUiSlider.create(slider, {
@@ -282,20 +581,22 @@
                 step: 1,
                 behaviour: 'tap-drag',
             });
-                slideEvList.on('update', function(values){
-                    minvalue = Number(values[0]);
-                    minvalue = yearLi[minvalue];
-                    minYearFilter = ['>=', 'YEAR', minvalue]
+                
+            slideEvList.on('update', function(values){
+                minvalue = Number(values[0]);
+                minvalue = yearLi[minvalue];
+                minYearFilter = ['>=', 'YEAR', minvalue]
+
+                maxvalue = Number(values[1]);
+                maxvalue = yearLi[maxvalue];
+                maxYearFilter = ['<=', 'YEAR', maxvalue]
                     
-                    maxvalue = Number(values[1]);
-                    maxvalue = yearLi[maxvalue];
-                    maxYearFilter = ['<=', 'YEAR', maxvalue]
-                    
-                    
-                    
-                    map.setFilter('plantYears', ['all', maxYearFilter, minYearFilter, additionalFilter, sicFilter, sicFilterMax]);
-                    
-                    yearTextContent(filters);
+                
+                setFilterFunction();
+
+                var filters = [minvalue, maxvalue];
+
+                yearTextContent(filters);
                 });
             
             slider.noUiSlider.on('update', function (values, handle) {
@@ -314,15 +615,23 @@
                 slider.noUiSlider.set([this.value, null]);
             });
             
+            function setFilterFunction () {
+                map.setFilter('plantYears', ['all', maxYearFilter, minYearFilter, NewFilter, AcqFilter, JovFilter, sicFilter, sicFilterMax]);
+            }
+            
             
             // play button function
             function go() {
                 if (playCon == 0) {
+                    document.getElementById('playbutton').innerHTML = "Pause";
                     runTimer();
                     playCon = 1;
+                    document.getElementById('playbutton').checked = true;
                 } else {
+                    document.getElementById('playbutton').innerHTML = "Play";
                     clearInterval(timer);
                     playCon = 0;
+                    document.getElementById('playbutton').checked = false;
                 }
             };
             
@@ -366,6 +675,7 @@
                 }
             };
             
+            
             function locktop() {
                 if (LockTop==true) {
                     LockTop = false;
@@ -375,32 +685,71 @@
             };
             
             
-            
-            function checkbox(index) {
-                if (index == 1) {
-                    document.getElementById('all').checked = false;
-                    document.getElementById('aq').checked = false;
-                    document.getElementById('new').checked = false;
-                    additionalFilter = ['==', 'JV', true];
-                } else if (index == 2) {
-                    document.getElementById('all').checked = false;
-                    document.getElementById('jv').checked = false;
-                    document.getElementById('new').checked = false;
-                    additionalFilter = ['==', 'ACQUIRE', true];
-                } else if (index == 3) {                    
-                    document.getElementById('all').checked = false;
-                    document.getElementById('aq').checked = false;
-                    document.getElementById('jv').checked = false;
-                    additionalFilter = ['==', 'NEW', true];
-                } else if (index == 0) {
-                    document.getElementById('jv').checked = false;
-                    document.getElementById('aq').checked = false;
-                    document.getElementById('new').checked = false;
-                    additionalFilter = ['>=','IDNUM', 0];
+            // Joint Venture filter 
+            function JvFun() {
+                if (JvF == 1) {
+                    JovFilter = ['>=','IDNUM', 0];
+                    JvF = 0;
+                    
+                } else {
+                    JovFilter = ['==', 'JV', true];
+                    JvF = 1;
                 }
                 
-                map.setFilter('plantYears', ['all', maxYearFilter, minYearFilter, additionalFilter, sicFilter, sicFilterMax]);
+                console.log(JovFilter)
+                
+                map.setFilter('plantYears', ['all', maxYearFilter, minYearFilter, NewFilter, AcqFilter, JovFilter, sicFilter, sicFilterMax]);
+            };
+            
+            
+            
+            function settingTheFilter(something) {
+                if (something == 0) {
+                    JvFun();
+                    
+                } else if (something == 1) {
+                    AqFun();
+                    
+                } else if (something == 2) {
+                    NwFun();
+                    
+                }
             }
+            
+            
+            
+            
+            // Acquisition filter 
+            
+            function AqFun() {
+                if (AqF == 1) {
+                    AcqFilter = ['>=','IDNUM', 0];
+                    AqF = 0;
+                } else {
+                    AcqFilter = ['==', 'ACQUIRE', true];
+                    AqF = 1;
+                }
+                
+                console.log(AcqFilter)
+                
+                map.setFilter('plantYears', ['all', maxYearFilter, minYearFilter, NewFilter, AcqFilter, JovFilter, sicFilter, sicFilterMax]);
+            };
+            
+            // New Plant filter 
+            function NwFun() {
+                if (NwF == 1) {
+                    NewFilter = ['>=','IDNUM', 0];
+                    NwF = 0;
+                } else {
+                    NewFilter = ['==', 'NEW', true];
+                    NwF = 1;
+                }
+                
+                console.log(NewFilter)
+                
+                map.setFilter('plantYears', ['all', maxYearFilter, minYearFilter, NewFilter, AcqFilter, JovFilter, sicFilter, sicFilterMax]);
+            };
+            
             
             function sicGo() {
                 var inputVal = document.getElementById('sicVal').value;
@@ -426,14 +775,21 @@
                     sicFilter = ['>=', 'SIC1', 3600];
                     sicFilterMax = ['<=', 'SIC1', 3699];
                 } else if (inputVal == 'Automotives') {
-                    sicFilter = ['==', 'SIC1', 3711];
-                    sicFilterMax = ['==', 'SIC1', 3714];
-                } else {
+                    sicFilter = ['>=', 'SIC1', 3711];
+                    sicFilterMax = ['<=', 'SIC1', 3716];
+                } else if (inputVal.length == 4) {
                     sicFilter = ['==', 'SIC1', Number(inputVal)];
                     sicFilterMax = ['==', 'SIC1', Number(inputVal)];
+                } else if (inputVal.length == 9) {
+                    var splitter = inputVal.split(' ')
+                    sicFilter = ['<=', 'SIC1', Number(splitter[1])];
+                    sicFilterMax = ['>=', 'SIC1', Number(splitter[0])];
+                } else {
+                    document.getElementById('sicVal').innerHTML = "Error";
                 }
                 
-                map.setFilter('plantYears', ['all', maxYearFilter, minYearFilter, additionalFilter, sicFilter, sicFilterMax]);
+                
+                map.setFilter('plantYears', ['all', maxYearFilter, minYearFilter, NewFilter, AcqFilter, JovFilter, sicFilter, sicFilterMax]);
             }
            
             function sicValClick() {

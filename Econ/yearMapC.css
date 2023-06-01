@@ -1,37 +1,62 @@
+/* Main UI Styles */
+
+/*  TOP  BAR  */
+#titlebar {
+    position: absolute;
+    font-family: 'Roboto Mono', 'Times New Roman', monospace;
+    top: 0px;
+    background-color: #025927;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+    color: #fff9d1;
+    font-size: 10px;
+    width: 100%;
+    text-indent: 20px;
+    height: 50px;
+}
+#info {
+    cursor: help;   
+    font-family: 'Roboto Mono', 'Times New Roman', monospace;
+}
+#menue {
+    position: absolute;
+    right: 10px;
+    top: 7px;
+    font-size: 25px;
+}
 
 #userControl {
     position: absolute;
-    top: 1%;
-    left: 20%;
-    background-color: #fff;
+    font-family: 'Roboto Mono', 'Times New Roman', monospace;
+    font-size: 16px;
+    top: 50px;
+    left: 40px;
+    right: 40px;
+    background-color: #025927;
     padding: 10px;
-    width: 60%;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
-    border-radius: 3px;
-
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+    border-radius: 0px 0px 10px 10px;
+    height: 35px;
 }
-
 #slider { 
     position: absolute;
-    top: 15px;
-    width: 350PX;
-    left: 150px;
-    padding: 0;
+    top: 24px;
     height: 10px;
+    left: 200px;
+    right: 210px;
+    background: #fff9d1;
 }
-#minYear {
-    margin-left: 0px;
+#FilterX {
+    position: absolute;
+    right: 10px;
+    top: -8px;
+    font-size: 24px;
+    cursor: help;
 }
-#maxYear {
-    margin-left: 375PX;
-}
-
-
 .slider-styled,
 .slider-styled .noUi-handle {
     box-shadow: none;
 }
-/* Hide markers on slider handles */
+/* HIDE MARKERS ON SLIDER HANDLES */
 .slider-styled .noUi-handle::before,
 .slider-styled .noUi-handle::after {
     display: none;
@@ -39,120 +64,354 @@
 .slider-styled .noUi-handle .noUi-touch-area {
     border: 1px solid transparent;
     position: absolute;
-    top: -10px;
-    left: -10px;
-    right: -10px;
-    bottom: -10px;
+    top: -7px;
+    left: -7px;
+    right: -7px;
+    bottom: -7px;
     width: auto;
     height: auto;
 }
-
-
-#jvFilter {
-    position: absolute;
-    bottom: 40px;
-    right: 10%;
-    background-color: #fff;
-    width: 120px;
-}
-#SIC1filter {
-    position: absolute;
-    right: 10%;
-    bottom: 120px;
-    background-color: #fff;
-}
-
-
-#userInterface { position: absolute; width: 50%; top: 10px; left: 25%;  padding: 10px;
-                 background-color: #fff; box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
-                 border-radius: 3px; padding: 10px; margin-bottom: 10px; }
-
-
-
-
 #slider .noUi-connect {
-    background: #c0392b;
+    background: #fff5b0;
+    height: 20px;
 }
 
 #slider .noUi-handle {
-    height: 18px;
-    width: 18px;
-    top: -5px;
-    right: -9px; /* half the width */
-    border-radius: 9px;
+    height: 15px;
+    width: 15px;
+    top: -4px;
+    right: -7.5px; /* half the width */
+    border-radius: 5px;
+    border-color: #ffe008;
+    background: #ffe008;
 }
 
-
-#darkMode { 
-    top: 0px; 
-    margin-left: 90px;
-
+.yearClass {
+    position: relative;
+    color: #fff9d1;
+    font-size: 16px;
+    margin: 10px 10px;
+    top: 7px;
 }
-#yearDisplay {
-    font-size: 20px;
-    margin-left: 0px;
-    margin-top: 0px;
-}
-#yrRangeInput {
-    margin-top: 5px;
-    margin-bottom: 5px;
-    width: 30px;
-}
-#speedSetting {
-    margin-left: 10px;
-}
-#changeStyle {
-    right: 0;
-}
-#yrRangeSlider {
-    margin-left: 30px;
-}
-#reloadData {
-    margin-left: 5px;
-}
-#legend {
+#play {
     position: absolute;
-    width: 20%;
-    top: 0;
-    right: 0;
+    left: 10px;
 }
+#minYear {
+    margin-left: 0px;
+    
+}
+.yearClassR {
+    position: absolute;
+    color: #fff9d1;
+    font-size: 16px;
+    margin: 10px 10px;
+    top: 7px;
+    right: 178px;
+    width: 10px;
+}
+#TopLock {
+    position: absolute;
+    right: 94px;
+}
+#FilterButton {
+    position: absolute;
+    right: 10px;   
+    width: 80px;
+}
+#TABBY {
+    position: relative;
+    width: 4%;
+    left: 48%;
+    background-color: #025927;
+    color: #fff9d1;
+    text-align: center;
+    top: 105px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+    border-radius: 0px 0px 5px 5px;
+}
+#TABBY:hover,
+#TABBY:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}
+/* END TOP BAR */
+
+
+/* The Modal (background) */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    padding-top: 100px; /* Location of the box */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content */
+.info-modal-content {
+    font-family: 'Roboto Mono', 'Times New Roman', monospace;
+    background-color: #025927;
+    color: #fff9d1;
+    margin: auto;
+    padding: 10px 20px;
+    border: 1px solid #888;
+    width: 80%;
+    border-radius: 10px;
+}
+
+/* The Close Button */
+.close {
+    color: #fff9d1;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+
+
+
+/*   LEGEND   */
 .LegendContainer {
     position: absolute;
-    background-color: #fff;
+    font-family: 'Roboto Mono', monospace;
+    font-size: 13px;
+    background-color: #025927;
+    color: #fff9d1;
     bottom: 40px;
-    width: 300px;
-    height: 180px;
+    left: 40px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+    border-radius: 10px;
+    padding: 10px;
+}
+#LegTitle{
+    font-family: 'Roboto Mono', monospace;
+    font-size: 16px;
+    text-decoration: ;
+    
 }
 .legendItem {
-    margin: 10px;
     display:inline-block;
     margin: 2px;
 }
 .food {
-    color:#577590 ;
+    color:#157CAE ;
 }
 .rawMaterials {
-    color:#90be6d ;
+    color:#D7AA27 ;
 }
 .metals {
-    color:#f9c74f ;
+    color:#AF272F ;
 }
 .machinery {
-    color:#f8961e ;
+    color:#00AEEF ;
 }
 .electronics {
-    color:#f3722c ;
+    color:#FFF200 ;
 }
 .auto {
-    color:#f94144 ;
+    color:#EC008C ;
 }
 .miscManf {
-    color:#43aa8b ;
+    color:#9A9C9F ;
 }
-#creds {
+
+/* The Close Button */
+.closeLeg {
+    color: #fff9d1;
     position: absolute;
-    background-color: #fff;
-    top: 100px;
-    right: 0;
-    width: 235px;
+    top: 4px;
+    right: 8px;
+    font-size: 18pt;
+    font-weight: bold;
 }
+
+.closeLeg:hover,
+.closeLeg:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}
+/* END LEGEND */
+
+
+
+
+
+
+
+
+
+/* FILTER WINDOW CODE */
+#Filters {
+    position: absolute;font-family: 'Roboto Mono', monospace;
+    bottom: 40px;
+    right: 40px;
+    background-color: #025927;
+    color: #fff9d1;
+    width: 180px;
+    margin-left: 10px;
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);    
+}
+
+#goButton{
+    background-color: grey;
+    border: none;
+    color: white;
+    padding: 2px 78px;
+    border-radius: 2px;
+    text-align: center;
+    display: inline-block;
+    cursor: pointer;    
+    margin: 2px 0px;
+}
+#goButton:active {
+    transform: scale(0.98);
+    /* Scaling button to 0.98 to its original size */
+    box-shadow: 3px 2px 22px 1px rgba(0, 0, 0, 0.24);
+    /* Lowering the shadow */
+}
+
+
+#jvFilter {
+    padding: 10px 0px;
+}
+
+button {
+    border-radius: 5px;
+    background: #017533;
+    color: #ececec;
+    font-size: 16px;
+}
+
+input {
+    cursor: pointer;
+}
+
+
+/* END FILTER WINDOW CODE */
+
+
+
+
+
+#sicVal {
+    padding: 2px;
+    margin: 2px 0px;
+}
+
+#playbutton {
+    color: #fffded;
+    font-size: 16px;
+    text-align: center;
+    width: 50px;
+    
+}
+#playbutton:active {
+    transform: scale(0.98);
+    /* Scaling button to 0.98 to its original size */
+    box-shadow: 3px 2px 22px 1px rgba(0, 0, 0, 0.24);
+    /* Lowering the shadow */
+}
+
+
+
+#Lock {
+    border: none;
+    padding: 1px;
+    border-radius: 5px;
+    font-family: 'Roboto Mono', monospace;
+    font-size: 13px;
+}
+
+
+#Lock:active {
+    transform: scale(0.98);
+    /* Scaling button to 0.98 to its original size */
+
+    box-shadow: 3px 2px 22px 1px rgba(0, 0, 0, 0.24);
+    /* Lowering the shadow */
+}
+
+
+
+
+/* Switch CSS code from https://www.w3schools.com/howto/tryit.asp?filename=tryhow_css_switch */
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 34px;
+}
+
+.switch input { 
+    opacity: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0px;
+    left: 1px;
+    right: 1px;
+    bottom: 1px;
+    border-radius: 5px;
+    text-align: center;
+    padding: 7px;
+    color: #fffded;
+    background-color: #017533;
+    -webkit-transition: .4s;
+    transition: .4s;
+    
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 0px;
+    width: 0px;
+    left: 0px;
+    bottom: 0px;
+    background-color: white;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+
+input:checked + .slider {
+    background-color: #004a1f;
+}
+
+input:focus + .slider {
+    box-shadow: 0 0 1px #004a1f;
+}
+
+input:checked + .slider:before {
+    -webkit-transform: translateX(26px);
+    -ms-transform: translateX(26px);
+    transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.slider.round {
+    border-radius: 34px;
+}
+
+.slider.round:before {
+    border-radius: 50%;
+}
+/* Switch CSS code from https://www.w3schools.com/howto/tryit.asp?filename=tryhow_css_switch */
