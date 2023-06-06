@@ -10,8 +10,11 @@
     color: #fff9d1;
     font-size: 10px;
     width: 100%;
-    text-indent: 20px;
     height: 50px;
+}
+#title{
+    font-size: 18px;
+    margin: 10px;
 }
 #info {
     cursor: help;   
@@ -23,7 +26,12 @@
     top: 7px;
     font-size: 25px;
 }
-
+#minYear {
+    color: #ffe008;
+}
+#maxYear {
+    color: #fff9d1;
+}
 #userControl {
     position: absolute;
     font-family: 'Roboto Mono', 'Times New Roman', monospace;
@@ -41,14 +49,27 @@
     position: absolute;
     top: 24px;
     height: 10px;
-    left: 200px;
-    right: 210px;
+    left: 220px;
+    right: 230px;
     background: #fff9d1;
+}
+#FilterTitle {
+    position: relative;
+    margin: 0px;
+    top: 0px;
+    left: 14px;
+}
+#FilX {
+    position: absolute;
+    right: 10px;
+    top: 0px;
+    font-size: 24px;
+    cursor: pointer;
 }
 #FilterX {
     position: absolute;
-    right: 10px;
-    top: -8px;
+    left: 10px;
+    top: 4px;
     font-size: 24px;
     cursor: help;
 }
@@ -88,35 +109,33 @@
 
 .yearClass {
     position: relative;
-    color: #fff9d1;
     font-size: 16px;
-    margin: 10px 10px;
+    margin: 10px;
     top: 7px;
+    left: 8px;
 }
 #play {
     position: absolute;
     left: 10px;
 }
-#minYear {
+#BtmLck {
     margin-left: 0px;
-    
 }
 .yearClassR {
     position: absolute;
-    color: #fff9d1;
     font-size: 16px;
     margin: 10px 10px;
     top: 7px;
-    right: 178px;
+    right: 198px;
     width: 10px;
 }
 #TopLock {
     position: absolute;
-    right: 94px;
+    right: 111px;
 }
 #FilterButton {
     position: absolute;
-    right: 10px;   
+    right: 14px;   
     width: 80px;
 }
 #TABBY {
@@ -226,7 +245,7 @@
     color:#EC008C ;
 }
 .miscManf {
-    color:#9A9C9F ;
+    color:#4D5859 ;
 }
 
 /* The Close Button */
@@ -245,6 +264,15 @@
     text-decoration: none;
     cursor: pointer;
 }
+
+.HiddenLegend {
+    color:#A2AAAD ;
+}
+
+
+
+
+
 /* END LEGEND */
 
 
@@ -271,10 +299,10 @@
 
 #goButton{
     background-color: grey;
+    appearance: block;
     border: none;
     color: white;
-    padding: 2px 78px;
-    border-radius: 2px;
+    padding: 0px 16px;
     text-align: center;
     display: inline-block;
     cursor: pointer;    
@@ -288,8 +316,18 @@
 }
 
 
+#sicVal {
+    display: block;
+    margin: 2px 0px;
+    width: 60%;
+    display: inline-block;
+    height: 14px;
+    background-color: white;
+    opacity: 1;
+    border-radius: 6px;
+}
 #jvFilter {
-    padding: 10px 0px;
+    padding: 8px 0px;
 }
 
 button {
@@ -297,30 +335,27 @@ button {
     background: #017533;
     color: #ececec;
     font-size: 16px;
+    margin: 10px;
 }
 
 input {
     cursor: pointer;
 }
-
+#rtws {
+    width: inherit;
+    padding: 1px 3px;
+    top: -0px;
+}
 
 /* END FILTER WINDOW CODE */
 
 
-
-
-
-#sicVal {
-    padding: 2px;
-    margin: 2px 0px;
-}
-
 #playbutton {
     color: #fffded;
-    font-size: 16px;
-    text-align: center;
     width: 50px;
-    
+    font-size: 12px;
+    text-align: center;
+    top: 0px;
 }
 #playbutton:active {
     transform: scale(0.98);
@@ -336,7 +371,8 @@ input {
     padding: 1px;
     border-radius: 5px;
     font-family: 'Roboto Mono', monospace;
-    font-size: 13px;
+    width: 70px;
+    
 }
 
 
@@ -356,8 +392,12 @@ input {
     position: relative;
     display: inline-block;
     width: 60px;
-    height: 34px;
+    height: 36px;
+    font-size: 12px;
+    text-align: center;
+    
 }
+
 
 .switch input { 
     opacity: 0;
@@ -414,4 +454,80 @@ input:checked + .slider:before {
 .slider.round:before {
     border-radius: 50%;
 }
-/* Switch CSS code from https://www.w3schools.com/howto/tryit.asp?filename=tryhow_css_switch */
+
+
+
+
+/* Switch CSS code from https://webcodespace.com/how-to-create-a-three-state-toggle-switch-using-html-css-and-javascript/ */
+
+
+input {
+    appearance: none;
+    background-color: black;
+    border-radius: 40%;
+    opacity: 0;
+    height: 8px;
+    width: 8px;
+    margin: 2px;
+}
+input:hover {
+    cursor: pointer;
+}
+.jvtri-state-toggle {
+    display: inline-flex;
+    justify-content: center;
+    border: 3px solid black;
+    border-radius: 30px;
+}
+.aqtri-state-toggle {
+    display: inline-flex;
+    justify-content: center;
+    border: 3px solid black;
+    border-radius: 30px;
+}
+.nwtri-state-toggle {
+    display: inline-flex;
+    justify-content: center;
+    border: 3px solid black;
+    border-radius: 30px;
+}
+
+#jvone {
+    background-color: red;
+}
+#jvtwo {
+    background-color: white;
+    opacity: 1;
+}
+#jvthree {
+    background-color: lawngreen;
+}
+
+
+#aqone {
+    background-color: red;
+}
+#aqtwo {
+    background-color: white;
+    opacity: 1;
+}
+#aqthree {
+    background-color: lawngreen;
+}
+
+
+#nwone {
+    background-color: red;
+}
+#nwtwo {
+    background-color: white;
+    opacity: 1;
+}
+#nwthree {
+    background-color: lawngreen;
+}
+
+
+
+
+
