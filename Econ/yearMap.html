@@ -43,24 +43,24 @@
                     </label>
 
                     <label class="switch" id="BtmLck">
-                      <input type="checkbox" onclick="lockbottom()">
-                      <span class="slider">Lock</span>
+                      <input type="checkbox" onclick="lockbottom()" checked>
+                      <span class="slider" id='Lock'>Lock<br>Min-Year</span>
                     </label>
 
-                    <span id="minYear" class="yearClass">1960</span>
+                    <span class="yearClass" id="minYear">1960</span>
 
                     <div class="slider-styled" id="slider"></div>
 
-                    <span id="maxYear" class="yearClassR">1992</span>
+                    <span class="yearClassR" id="maxYear">1992</span>
 
                     <label class="switch" id="TopLock">
                       <input type="checkbox" onclick="locktop()">
-                      <span class="slider">Lock</span>
+                      <span class="slider" id='Lock'>Lock<br>Max-Year</span>
                     </label>
                     
                     <label class="switch" id="FilterButton">
-                      <input type="checkbox" id="FiltersCheckBox" checked>
-                      <span class="slider">Filters</span>
+                      <input type="checkbox" id="FiltersCheckBox" onclick="rtwsBtn()">
+                      <span class="slider" id='rtws'>Right To <br> Work States</span>
                     </label>
                 </div>
             </div>
@@ -73,33 +73,57 @@
         
         
         <div id='Filters'>
-            <span id="FilterX">&mldr;</span>
-            <div id='jvFilter'>
-                <input type='checkbox' id="jv" name="jv" onclick="settingTheFilter(0)">
-                <label for='jv'>Joint Venture</label><br>
-                
-                <input type='checkbox' id="aq" name="aq" onclick="settingTheFilter(1)">
-                <label for='aq'>Acquisition</label><br>
-                
-                <input type='checkbox' id="new" name="new" onclick="settingTheFilter(2)">
-                <label for='new'>New</label><br>
+            <div id="filterDiv">
+                <span id="FilterX">&vellip;</span>
+                <span id="FilterTitle">Filter:</span>
+                <span class="closeLeg" onclick="FilBtn()" id='FilX'>&times;</span>
             </div>
+            
+            <div id="FilterHiddenSection">
+                
+                
+                <div id='jvFilter'>
+                    
+                    <div class="jvtri-state-toggle">
+                      <input class="jvButton" type="radio" name="toggle" id="jvone" onclick="settingTheFilter('nojv')"/>
+                      <input class="jvButton" type="radio" name="toggle" id="jvtwo" onclick="settingTheFilter('jv')"/>
+                      <input class="jvButton" type="radio" name="toggle" id="jvthree" onclick="settingTheFilter('alljv')"/>
+                    </div>
+                    <label for='jv'>Joint Venture</label><br>
 
-            <div id="SIC1filter">
-                <label form="sicVal">SIC Code:</label>
-                <input type="text" id="sicVal" name="sicVal" list="options" onclick='sicValClick()'>
-                <datalist id="options">
-                    <option value="Food"></option>
-                    <option value="Raw Materials"></option>
-                    <option value="Metal"></option>
-                    <option value="Machinery"></option>
-                    <option value="Electronics"></option>
-                    <option value="Automotives"></option>
-                    <option value="Misc"></option>
-                </datalist>
-                <button onclick="sicGo()" id="goButton">Go</button>
+                    
+                    <div class="aqtri-state-toggle">
+                      <input class="aqButton" type="radio" name="toggle" id="aqone" onclick="settingTheFilter('noaq')"/>
+                      <input class="aqButton" type="radio" name="toggle" id="aqtwo" onclick="settingTheFilter('aq')"/>
+                      <input class="aqButton" type="radio" name="toggle" id="aqthree" onclick="settingTheFilter('allaq')"/>
+                    </div>
+                    <label for='aq'>Acquisition</label><br>
 
+                    
+                    <div class="nwtri-state-toggle">
+                      <input class="nwButton" type="radio" name="toggle" id="nwone" onclick="settingTheFilter('nonw')"/>
+                      <input class="nwButton" type="radio" name="toggle" id="nwtwo" onclick="settingTheFilter('nw')"/>
+                      <input class="nwButton" type="radio" name="toggle" id="nwthree" onclick="settingTheFilter('allnw')"/>
+                    </div>
+                    <label for='new'>New</label><br>
+                </div>
+
+                <div id="SIC1filter">
+                    <label form="sicVal">SIC Code:</label>
+                    <input type="text" id="sicVal" name="sicVal" list="options" onclick='sicValClick()'>
+                    <datalist id="options">
+                        <option value="Food" ></option>
+                        <option value="Raw Materials" ></option>
+                        <option value="Metal" ></option>
+                        <option value="Machinery" ></option>
+                        <option value="Electronics" ></option>
+                        <option value="Automotives" ></option>
+                        <option value="Misc" ></option>
+                    </datalist>
+                    <button onclick="sicGo()" id="goButton">Go</button>
+                </div>
             </div>
+            
         </div>
 
         
@@ -120,7 +144,7 @@
                     <br><br>
                     Right To Work - The state polygons used come from the 2018 census, and were the 20m shapefiles. Data about states right to work was then added to the state polygon layer, this data was found at <a href="https://nrtwc.org/facts/state-right-to-work-timeline-2016/"> The National Right To Work Committee</a>. Visulizing all states with right to work dates before 1980.
                     <br><br>
-                    Base Map -  The base map currently being used is the standard MapBox Light V11. 
+                    Base Map -  The base map currently being used is a slightly customized version of the monochrome MapBox layer. (mapbox://styles/ptimmys/cli0j2lad00ul01po2d4t5fyo) 
                 </p>
             </div>
         </div>
@@ -135,9 +159,10 @@
                 <p>
                     Filters: 
                     <br><br>
-                    Checkboxes - Filter by joint venture, acquisitions, or new manufacturing plants by toggling check box. *Note* Filter is NOT stackable. For the New filter, the data is for all plants that are NOT Acquisitions or Joint Ventures, THIS MEANS IF NEW IS CHECKED ANY OTHER FILTER WILL CLEAR ALL DATA.
+                    Switches - Filter by joint venture, acquisitions, or new manufacturing plants by switching a flip! The middle position means there is no filter currently being applied, the right position (green) means the filter for that layer is active, and the left position (red) means that layer is filtered out. <br>
+                    Example: If the Joint Venture filter is green, all Joint Venture manufacuring plants will be shown (this includes some Acquisition plants). In order to just view the Joint Venture layer, the Joint Venture switch should be green and the Acquisition and New switches should be red. *Note that the datasets has some plants which are both Joint Ventures and Acquisitions, but no New plant is a Joint Venture or Aquisition. 
                     <br><br>
-                    SIC filter - Filter by specific code (ex: '3711'), code ranges (ex: '3100 3560'), or predefined range (ex: 'Machinery').
+                    SIC filter - Filter by individual Standard Industrial Classification (ex: '3711'), SIC ranges (ex: '3100 3560'), or select a predefined range (ex: 'Machinery').
                     <br><br>
                 </p>
             </div>
@@ -154,37 +179,37 @@
             </div>
             <div id="LegendItems">
                 <div class="legendItem">
-                    <span class="food">&#11044;</span>
+                    <span class="food" id='food'>&#11044;</span>
                     <span class="layerDescription">Food &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (sic: 2032-2099)</span>
                 </div>
                 <br>
                 <div class="legendItem">
-                    <span class="rawMaterials">&#11044;</span>
+                    <span class="rawMaterials" id="rawMaterials">&#11044;</span>
                     <span class="layerDescription">Textiles/Raw Materials  (sic: 2259-3297)</span>
                 </div>
                 <br>
                 <div class="legendItem">
-                    <span class="metals">&#11044;</span>
+                    <span class="metals" id="metals">&#11044;</span>
                     <span class="layerDescription">Metal Products &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (sic: 3312-3498)</span>
                 </div>
                 <br>
                 <div class="legendItem">
-                    <span class="machinery">&#11044;</span>
+                    <span class="machinery" id="machinery">&#11044;</span>
                     <span class="layerDescription">Machinery &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (sic: 3531-3593)</span>
                 </div>
                 <br>
                 <div class="legendItem">
-                    <span class="electronics">&#11044;</span>
+                    <span class="electronics" id="electronics">&#11044;</span>
                     <span class="layerDescription">Electronics &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (sic: 3616-3695)</span>
                 </div>
                 <br>
                 <div class="legendItem">
-                    <span class="auto">&#11044;</span>
+                    <span class="auto" id="auto">&#11044;</span>
                     <span class="layerDescription">Automotives &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (sic: 3711-3716)</span>
                 </div>
                 <br>
                 <div class="legendItem">
-                    <span class="miscManf">&#11044;</span>
+                    <span class="miscManf" id="miskManf">&#11044;</span>
                     <span class="layerDescription">Misc. &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (sic: 3700-3999)</span>
                 </div>
             </div>
@@ -205,6 +230,45 @@
                     center: [-95.7129, 37.0902], 
                     zoom: 3
             });
+            
+            // load data when map is loaded
+            map.on('load', function(){
+                
+                // add manfplants geojson source
+                map.addSource('ManfPlants', {
+                    'type': 'geojson',
+                    data: './EconUpdated.geojson',
+                });
+                
+                // add rtws geojson source
+                map.addSource('rightToWorkStates', {
+                    'type': 'geojson',
+                    data: './rtwStates.geojson',
+                });
+                
+                map.addLayer({
+                        'id': 'RTWS',
+                        'type': 'fill',
+                        'source': 'rightToWorkStates',
+                        paint: {
+                            'fill-color': "rgba(0, 0, 0, 0.3)",
+                        }
+                    });
+                map.setFilter('RTWS', ['==', 'id', 0]);
+                
+                // add geojson as a layer
+                map.addLayer({
+                    'id': 'plantYears',
+                    'type': 'circle',
+                    'source': 'ManfPlants',
+                    paint: {
+                        'circle-color': dataStyle[0],
+                    }
+                });
+                
+                
+                
+            });
             //////////////////////////////////////////////////////////
             // mapbox://styles/ptimmys/cli0j2lad00ul01po2d4t5fyo
             
@@ -222,190 +286,51 @@
             ];
             
             const dataStyle = [[
-                              "match",
-                              ["get", "SIC1"],
-                              0,
-                              [
-                                "interpolate",
-                                ["linear"],
-                                ["get", "SIC1"],
-                                2011,"#157CAE",2099,"#157CAE",
-                                  
-                                2100,"#D7AA27",3299,"#D7AA27",
-                                  
-                                3300,"#AF272F",3499,"#AF272F",
-                                  
-                                3500,"#00AEEF",3599,"#00AEEF",
-                                  
-                                3600,"#FFF200",3699,"#FFF200",
-                                  
-                                3700,"#9A9C9F",3710,"#9A9C9F",
-                                  
-                                3711,"#EC008C",3716,"#EC008C",
-                                  
-                                3717,"#9A9C9F",3999,"#9A9C9F"
-                                
-                              ],
-                              [
-                                "interpolate",
-                                ["linear"],
-                                ["get", "SIC1"],
-                                2011,"#157CAE",2099,"#157CAE",
-                                  
-                                2100,"#D7AA27",3299,"#D7AA27",
-                                  
-                                3300,"#AF272F",3499,"#AF272F",
-                                  
-                                3500,"#00AEEF",3599,"#00AEEF",
-                                  
-                                3600,"#FFF200",3699,"#FFF200",
-                                  
-                                3700,"#9A9C9F",3710,"#9A9C9F",
-                                  
-                                3711,"#EC008C",3716,"#EC008C",
-                                  
-                                3717,"#9A9C9F",3999,"#9A9C9F"
-                              ]
-                            ] , [
-                              "match",
-                              ["get", "SIC1"],
-                              0,
-                              [
-                                "interpolate",
-                                ["linear"],
-                                ["get", "SIC1"],
-                                2011,"#157CAE",2099,"#157CAE",
-                                  
-                                2100,"#D7AA27",3299,"#D7AA27",
-                                  
-                                3300,"#AF272F",3499,"#AF272F",
-                                  
-                                3500,"#00AEEF",3599,"#00AEEF",
-                                  
-                                3600,"#FFF200",3699,"#FFF200",
-                                  
-                                3700,"#9A9C9F",3710,"#9A9C9F",
-                                  
-                                3711,"#EC008C",3716,"#EC008C",
-                                  
-                                3717,"#9A9C9F",3999,"#9A9C9F"
+                                  "match",
+                                  ["get", "SIC1"],
+                                  0,
+                                  [
+                                    "interpolate",
+                                    ["linear"],
+                                    ["get", "SIC1"],
+                                    2011,"#157CAE",2099,"#157CAE",
 
-                                
-                              ],
-                              [
-                                "interpolate",
-                                ["linear"],
-                                ["get", "SIC1"],
-                                2011,"#157CAE",2099,"#157CAE",
-                                  
-                                2100,"#D7AA27",3299,"#D7AA27",
-                                  
-                                3300,"#AF272F",3499,"#AF272F",
-                                  
-                                3500,"#00AEEF",3599,"#00AEEF",
-                                  
-                                3600,"#FFF200",3699,"#FFF200",
-                                  
-                                3700,"#9A9C9F",3710,"#9A9C9F",
-                                  
-                                3711,"#EC008C",3716,"#EC008C",
-                                  
-                                3717,"#9A9C9F",3999,"#9A9C9F"
-                              ]
-                            ] , [
-                              "match",
-                              ["get", "SIC1"],
-                              0,
-                              [
-                                "interpolate",
-                                ["linear"],
-                                ["get", "SIC1"],
-                                2011,"#157CAE",2099,"#157CAE",
-                                  
-                                2100,"#D7AA27",3299,"#D7AA27",
-                                  
-                                3300,"#AF272F",3499,"#AF272F",
-                                  
-                                3500,"#00AEEF",3599,"#00AEEF",
-                                  
-                                3600,"#FFF200",3699,"#FFF200",
-                                  
-                                3700,"#9A9C9F",3710,"#9A9C9F",
-                                  
-                                3711,"#EC008C",3716,"#EC008C",
-                                  
-                                3717,"#9A9C9F",3999,"#9A9C9F"
+                                    2100,"#D7AA27",3299,"#D7AA27",
 
-                                
-                              ],
-                              [
-                                "interpolate",
-                                ["linear"],
-                                ["get", "SIC1"],
-                                2011,"#157CAE",2099,"#157CAE",
-                                  
-                                2100,"#D7AA27",3299,"#D7AA27",
-                                  
-                                3300,"#AF272F",3499,"#AF272F",
-                                  
-                                3500,"#00AEEF",3599,"#00AEEF",
-                                  
-                                3600,"#FFF200",3699,"#FFF200",
-                                  
-                                3700,"#9A9C9F",3710,"#9A9C9F",
-                                  
-                                3711,"#EC008C",3716,"#EC008C",
-                                  
-                                3717,"#9A9C9F",3999,"#9A9C9F"
-                              ]
-                            ] , [
-                              "match",
-                              ["get", "SIC1"],
-                              0,
-                              [
-                                "interpolate",
-                                ["linear"],
-                                ["get", "SIC1"],
-                                2011,"#157CAE",2099,"#157CAE",
-                                  
-                                2100,"#D7AA27",3299,"#D7AA27",
-                                  
-                                3300,"#AF272F",3499,"#AF272F",
-                                  
-                                3500,"#00AEEF",3599,"#00AEEF",
-                                  
-                                3600,"#FFF200",3699,"#FFF200",
-                                  
-                                3700,"#9A9C9F",3710,"#9A9C9F",
-                                  
-                                3711,"#EC008C",3716,"#EC008C",
-                                  
-                                3717,"#9A9C9F",3999,"#9A9C9F"
+                                    3300,"#AF272F",3499,"#AF272F",
 
-                                
-                              ],
-                              [
-                                "interpolate",
-                                ["linear"],
-                                ["get", "SIC1"],
-                                2011,"#157CAE",2099,"#157CAE",
-                                  
-                                2100,"#D7AA27",3299,"#D7AA27",
-                                  
-                                3300,"#AF272F",3499,"#AF272F",
-                                  
-                                3500,"#00AEEF",3599,"#00AEEF",
-                                  
-                                3600,"#FFF200",3699,"#FFF200",
-                                  
-                                3700,"#9A9C9F",3710,"#9A9C9F",
-                                  
-                                3711,"#EC008C",3716,"#EC008C",
-                                  
-                                3717,"#9A9C9F",3999,"#9A9C9F"
-                              ]
-                            ]
-                    ];
+                                    3500,"#00AEEF",3599,"#00AEEF",
+
+                                    3600,"#FFF200",3699,"#FFF200",
+
+                                    3700,"#4D5859",3710,"#4D5859",
+
+                                    3711,"#EC008C",3716,"#EC008C",
+
+                                    3717,"#4D5859",3999,"#4D5859"
+
+                                  ],
+                                  [
+                                    "interpolate",
+                                    ["linear"],
+                                    ["get", "SIC1"],
+                                    2011,"#157CAE",2099,"#157CAE",
+
+                                    2100,"#D7AA27",3299,"#D7AA27",
+
+                                    3300,"#AF272F",3499,"#AF272F",
+
+                                    3500,"#00AEEF",3599,"#00AEEF",
+
+                                    3600,"#FFF200",3699,"#FFF200",
+
+                                    3700,"#4D5859",3710,"#4D5859",
+
+                                    3711,"#EC008C",3716,"#EC008C",
+
+                                    3717,"#4D5859",3999,"#4D5859"
+                                   ]
+                                ]];
             
             
             /////////////////////////////////////////////////////////
@@ -416,29 +341,9 @@
             //             Using a geojson file for now            //
             /////////////////////////////////////////////////////////
             
-            function addDataLayer() {
-                
-                // add geojson source
-                map.addSource('ManfPlants', {
-                    'type': 'geojson',
-                    data: './EconUpdated.geojson',
-                });
-                
-                // add geojson as a layer
-                map.addLayer({
-                    'id': 'plantYears',
-                    'type': 'circle',
-                    'source': 'ManfPlants',
-                    paint: {
-                        'circle-color': dataStyle[0],
-                    }
-                });
-            };
             
-            // load data when map is loaded
-            map.on('load', function(){
-                addDataLayer();
-            });
+            
+            
             
             //////////////////////////////////////////////////////////
             
@@ -461,10 +366,6 @@
                 };
             };
             
-//            // load data when style is changed
-//            map.on('style.load', function () {
-//                addDataLayer();
-//            });
             
             /////////////////////////////////////////////////////////
             
@@ -484,7 +385,7 @@
             var TABBIE = document.getElementById("TABBY");
             var usrCon = document.getElementById('userControl');
             var filCB = document.getElementById('FiltersCheckBox');
-            var filbox = document.getElementById('Filters');
+            var filbox = document.getElementById('FilterHiddenSection');
             var filX = document.getElementById('FilterX');
             var filHelp = document.getElementById('filterInfoModal');
 
@@ -516,6 +417,19 @@
                 }
             }
             
+            function FilBtn () {
+                if (filterTog == 1) {
+                    filbox.style.display = 'none';
+                    document.getElementById('FilX').innerHTML = '&plus;';
+                    filterTog = 0;
+                } else {
+                    filbox.style.display = 'block';
+                    document.getElementById('FilX').innerHTML = '&times;';
+                    filterTog = 1;
+                }
+            }
+            
+            
             TABBIE.onclick = function() {
                 if (playToggle == 0) {
                     usrCon.style.display = 'block';
@@ -528,15 +442,7 @@
                 }
             }
             
-            filCB.onclick = function() {
-                if (filterTog == 1) {
-                    filbox.style.display = 'none';
-                    filterTog = 0;
-                } else {
-                    filbox.style.display = 'block';
-                    filterTog = 1;
-                }
-            }
+            
             
             filX.onclick = function() {
                 filHelp.style.display = "block";
@@ -551,10 +457,88 @@
               }
             }
                 
+            
+            var rtwsOn = 0;
+            /// Right to work states add data 
+            function rtwsBtn() {
+                
+                if (rtwsOn == 0) {
+                    map.setFilter('RTWS', ['==', 'rtwID', 1]);
+                    rtwsOn = 1;
+                    
+                } else if (rtwsOn == 1) {
+                    map.setFilter('RTWS', ['==', 'id', 0]);
+                    rtwsOn = 0;
+                }
+
+            };
+            
+            
+            
+            // js from https://webcodespace.com/how-to-create-a-three-state-toggle-switch-using-html-css-and-javascript/ //
+            var jvbuttons = document.getElementsByClassName("jvButton");
+            var jvarr = [...jvbuttons];
+
+            jvarr.forEach((element, index) => {
+                element.addEventListener("click", () => {
+                    element.style.opacity = "1";
+                    jvarr
+                        .filter(function (item) {
+                        return item != element;
+                    })
+                        .forEach((item) => {
+                        item.style.opacity = "0";
+                    });
+                });
+            });
+
+            var aqbuttons = document.getElementsByClassName("aqButton");
+            var aqarr = [...aqbuttons];
+
+            aqarr.forEach((element, index) => {
+                element.addEventListener("click", () => {
+                    element.style.opacity = "1";
+                    aqarr
+                        .filter(function (item) {
+                        return item != element;
+                    })
+                        .forEach((item) => {
+                        item.style.opacity = "0";
+                    });
+                });
+            }); 
+
+            var nwbuttons = document.getElementsByClassName("nwButton");
+            var nwarr = [...nwbuttons];
+
+            nwarr.forEach((element, index) => {
+                element.addEventListener("click", () => {
+                    element.style.opacity = "1";
+                    nwarr
+                        .filter(function (item) {
+                        return item != element;
+                    })
+                        .forEach((item) => {
+                        item.style.opacity = "0";
+                    });
+                });
+            }); 
+
+///////////////////////////////////////////////////////////////////////////
+            
+            
+            
+            
+            
+            
+            
+            
             /////////////////////////////////////////////////////////
             //                    No UI Slider                     //
             /////////////////////////////////////////////////////////
             var playCon = 0;
+            let ziggy = document.getElementById('minYear');
+            let iggy = document.getElementById('maxYear');
             var slider = document.getElementById('slider');
             var select = document.getElementById('spanID');
             var minvalue = 0;
@@ -563,7 +547,7 @@
             var maxYearFilter = ['>=', 'YEAR', 4000];
             var sicFilter = ['>=', 'SIC1', 0];
             var sicFilterMax = ['>=', 'SIC1', 0];
-            var LockBottom = false;
+            var LockBottom = true;
             var LockTop = false;
             var AqF = 0;
             var NwF = 0;
@@ -582,6 +566,257 @@
                 behaviour: 'tap-drag',
             });
                 
+            
+            
+            // play button function
+            function go() {
+                if (playCon == 0) {
+                    document.getElementById('playbutton').innerHTML = "Pause";
+                    runTimer();
+                    playCon = 1;
+                    document.getElementById('playbutton').checked = true;
+                } else {
+                    document.getElementById('playbutton').innerHTML = "Play";
+                    clearInterval(timer);
+                    playCon = 0;
+                    document.getElementById('playbutton').checked = false;
+                }
+            };
+            
+            // call the timer Function 
+            function runTimer(){
+                timer = setInterval(myTimer, 1000);
+            };
+            // timer funciton, updates slider values
+            function myTimer() {
+                var years = slider.noUiSlider.get();
+                if (LockBottom == true) {
+                    var minyears = Number(years[0]);
+                } else {
+                    var minyears = Number(years[0]) + 1;
+                }
+                if (LockTop == true) {
+                    var maxyears = Number(years[1]);
+                } else {
+                    var maxyears = Number(years[1]) + 1;
+                }
+                
+                if (maxyears > 32){
+                    slider.noUiSlider.set([null, minyears]);
+                } else {
+                    slider.noUiSlider.set([minyears, maxyears]);
+                }
+            };
+            
+                        
+            function yearTextContent(heldValues) {
+                document.getElementById('maxYear').textContent = Number(heldValues[1]);
+                document.getElementById('minYear').textContent = Number(heldValues[0]);
+            };
+            
+            
+            
+            
+            function lockbottom() {
+                if (LockBottom==true) {
+                    ziggy.style.color = '#fff9d1';
+                    LockBottom = false;
+                    
+                } else {
+                    ziggy.style.color = '#ffe008';
+                    LockBottom = true;
+                }
+            };
+            
+            
+            function locktop() {
+                if (LockTop==true) {
+                    iggy.style.color = '#fff9d1';
+                    LockTop = false;
+                } else {
+                    iggy.style.color = '#ffe008';
+                    LockTop = true;
+                }
+            };
+            
+            
+            function settingTheFilter(something) {
+                if (something == 'nojv') {
+                    JovFilter = ['!=', 'JV', true];
+                    
+                    console.log(JovFilter);
+                    
+                } else if (something == 'jv') {
+                    JovFilter = ['>=','IDNUM', 0];
+                    
+                } else if (something == 'alljv') {
+                    JovFilter = ['==', 'JV', true];
+                    
+                } else if (something == 'noaq') {
+                    AcqFilter = ['!=', 'ACQUIRE', true];
+              
+                } else if (something == 'aq') {
+                    AcqFilter = ['>=','IDNUM', 0];
+                
+                } else if (something == 'allaq') {
+                    AcqFilter = ['==', 'ACQUIRE', true];
+                
+                } else if (something == 'nonw') {
+                    NewFilter = ['!=', 'NEW', true];
+                
+                } else if (something == 'nw') {
+                    NewFilter = ['>=','IDNUM', 0];
+                
+                } else if (something == 'allnw') {
+                    NewFilter = ['==', 'NEW', true];
+                }
+                
+                map.setFilter('plantYears', ['all', maxYearFilter, minYearFilter, NewFilter, AcqFilter, JovFilter, sicFilter, sicFilterMax]);
+            };
+            
+            
+            
+            
+            
+            
+            const food = document.getElementById('food');
+            const rawMaterials = document.getElementById('rawMaterials');
+            const metal = document.getElementById('metal');
+            const machinery = document.getElementById('machinery');
+            const electronics = document.getElementById('electronics');
+            const auto = document.getElementById('auto');
+            const miscManf = document.getElementById('miscManf');
+            
+            
+            
+            
+            
+            function sicGo() {
+                var inputVal = document.getElementById('sicVal').value;
+                if (inputVal == '') {
+                    sicFilter = ['>=', 'SIC1', 0];
+                    sicFilterMax = ['>=', 'SIC1', 0];
+                    document.getElementById('food').classList.remove('HiddenLegend');
+                    document.getElementById('rawMaterials').classList.remove('HiddenLegend');
+                    document.getElementById('metals').classList.remove('HiddenLegend');
+                    document.getElementById('machinery').classList.remove('HiddenLegend');
+                    document.getElementById('electronics').classList.remove('HiddenLegend');
+                    document.getElementById('auto').classList.remove('HiddenLegend');
+                    document.getElementById('miskManf').classList.remove('HiddenLegend');
+                    
+                    
+                    
+                    
+                } else if (inputVal == 'Food') {
+                    sicFilter = ['>=', 'SIC1', 2000];
+                    sicFilterMax = ['<=', 'SIC1', 2100];
+                    document.getElementById('food').classList.remove('HiddenLegend');
+                    document.getElementById('metals').classList.add('HiddenLegend');
+                    document.getElementById('rawMaterials').classList.add('HiddenLegend');
+                    document.getElementById('machinery').classList.add('HiddenLegend');
+                    document.getElementById('electronics').classList.add('HiddenLegend');
+                    document.getElementById('auto').classList.add('HiddenLegend');
+                    document.getElementById('miskManf').classList.add('HiddenLegend');
+                
+                
+                } else if (inputVal == 'Misc') {
+                    sicFilter = ['>=', 'SIC1', 3700];
+                    sicFilterMax = ['<=', 'SIC1', 5000];
+                    document.getElementById('miskManf').classList.remove('HiddenLegend');
+                    document.getElementById('auto').classList.remove('HiddenLegend');
+                    document.getElementById('metals').classList.add('HiddenLegend');
+                    document.getElementById('rawMaterials').classList.add('HiddenLegend');
+                    document.getElementById('machinery').classList.add('HiddenLegend');
+                    document.getElementById('electronics').classList.add('HiddenLegend');
+                    document.getElementById('food').classList.add('HiddenLegend');
+                
+                
+                } else if (inputVal == 'Raw Materials') {
+                    sicFilter = ['>=', 'SIC1', 2200];
+                    sicFilterMax = ['<=', 'SIC1', 3299];
+                    document.getElementById('rawMaterials').classList.remove('HiddenLegend');
+                    document.getElementById('metals').classList.add('HiddenLegend');
+                    document.getElementById('food').classList.add('HiddenLegend');
+                    document.getElementById('machinery').classList.add('HiddenLegend');
+                    document.getElementById('electronics').classList.add('HiddenLegend');
+                    document.getElementById('auto').classList.add('HiddenLegend');
+                    document.getElementById('miskManf').classList.add('HiddenLegend');
+               
+                
+                } else if (inputVal == 'Metal') {
+                    sicFilter = ['>=', 'SIC1', 3300];
+                    sicFilterMax = ['<=', 'SIC1', 3499];
+                    document.getElementById('metals').classList.remove('HiddenLegend');
+                    document.getElementById('food').classList.add('HiddenLegend');
+                    document.getElementById('rawMaterials').classList.add('HiddenLegend');
+                    document.getElementById('machinery').classList.add('HiddenLegend');
+                    document.getElementById('electronics').classList.add('HiddenLegend');
+                    document.getElementById('auto').classList.add('HiddenLegend');
+                    document.getElementById('miskManf').classList.add('HiddenLegend');
+                
+                
+                } else if (inputVal == 'Machinery') {
+                    sicFilter = ['>=', 'SIC1', 3500];
+                    sicFilterMax = ['<=', 'SIC1', 3599];
+                    document.getElementById('machinery').classList.remove('HiddenLegend');
+                    document.getElementById('metals').classList.add('HiddenLegend');
+                    document.getElementById('rawMaterials').classList.add('HiddenLegend');
+                    document.getElementById('food').classList.add('HiddenLegend');
+                    document.getElementById('electronics').classList.add('HiddenLegend');
+                    document.getElementById('auto').classList.add('HiddenLegend');
+                    document.getElementById('miskManf').classList.add('HiddenLegend');
+                
+                
+                } else if (inputVal == 'Electronics') {
+                    sicFilter = ['>=', 'SIC1', 3600];
+                    sicFilterMax = ['<=', 'SIC1', 3699];
+                    document.getElementById('electronics').classList.remove('HiddenLegend');
+                    document.getElementById('metals').classList.add('HiddenLegend');
+                    document.getElementById('rawMaterials').classList.add('HiddenLegend');
+                    document.getElementById('machinery').classList.add('HiddenLegend');
+                    document.getElementById('food').classList.add('HiddenLegend');
+                    document.getElementById('auto').classList.add('HiddenLegend');
+                    document.getElementById('miskManf').classList.add('HiddenLegend');
+                
+                
+                } else if (inputVal == 'Automotives') {
+                    sicFilter = ['>=', 'SIC1', 3711];
+                    sicFilterMax = ['<=', 'SIC1', 3716];
+                    document.getElementById('auto').classList.remove('HiddenLegend');
+                    document.getElementById('metals').classList.add('HiddenLegend');
+                    document.getElementById('rawMaterials').classList.add('HiddenLegend');
+                    document.getElementById('machinery').classList.add('HiddenLegend');
+                    document.getElementById('electronics').classList.add('HiddenLegend');
+                    document.getElementById('food').classList.add('HiddenLegend');
+                    document.getElementById('miskManf').classList.add('HiddenLegend');
+               
+                
+                } else if (inputVal.length == 4) {
+                    sicFilter = ['==', 'SIC1', Number(inputVal)];
+                    sicFilterMax = ['==', 'SIC1', Number(inputVal)];
+               
+                
+                } else if (inputVal.length == 9) {
+                    var splitter = inputVal.split(' ')
+                    sicFilter = ['<=', 'SIC1', Number(splitter[1])];
+                    sicFilterMax = ['>=', 'SIC1', Number(splitter[0])];
+               
+                
+                } else {
+                    document.getElementById('sicVal').innerHTML = "Error";
+                }
+                
+                
+                map.setFilter('plantYears', ['all', maxYearFilter, minYearFilter, NewFilter, AcqFilter, JovFilter, sicFilter, sicFilterMax]);
+            }
+           
+            function sicValClick() {
+                document.getElementById('sicVal').value = '';
+            }
+            
+            
+            
+            
             slideEvList.on('update', function(values){
                 minvalue = Number(values[0]);
                 minvalue = yearLi[minvalue];
@@ -620,182 +855,7 @@
             }
             
             
-            // play button function
-            function go() {
-                if (playCon == 0) {
-                    document.getElementById('playbutton').innerHTML = "Pause";
-                    runTimer();
-                    playCon = 1;
-                    document.getElementById('playbutton').checked = true;
-                } else {
-                    document.getElementById('playbutton').innerHTML = "Play";
-                    clearInterval(timer);
-                    playCon = 0;
-                    document.getElementById('playbutton').checked = false;
-                }
-            };
-            
-            // call the timer Function 
-            function runTimer(){
-                timer = setInterval(myTimer, 1000);
-            };
-            // timer funciton, updates slider values
-            function myTimer() {
-                var years = slider.noUiSlider.get();
-                if (LockBottom == true) {
-                    var minyears = Number(years[0]);
-                } else {
-                    var minyears = Number(years[0]) + 1;
-                }
-                if (LockTop == true) {
-                    var maxyears = Number(years[1]);
-                } else {
-                    var maxyears = Number(years[1]) + 1;
-                }
-                
-                if (maxyears >= 32){
-                    go();
-                };
-                
-                slider.noUiSlider.set([minyears, maxyears]);
-            };
-            
-                        
-            function yearTextContent(heldValues) {
-                document.getElementById('maxYear').textContent = Number(heldValues[1]);
-                document.getElementById('minYear').textContent = Number(heldValues[0]);
-            };
-            
-            
-            function lockbottom() {
-                if (LockBottom==true) {
-                    LockBottom = false;
-                } else {
-                    LockBottom = true;
-                }
-            };
-            
-            
-            function locktop() {
-                if (LockTop==true) {
-                    LockTop = false;
-                } else {
-                    LockTop = true;
-                }
-            };
-            
-            
-            // Joint Venture filter 
-            function JvFun() {
-                if (JvF == 1) {
-                    JovFilter = ['>=','IDNUM', 0];
-                    JvF = 0;
-                    
-                } else {
-                    JovFilter = ['==', 'JV', true];
-                    JvF = 1;
-                }
-                
-                console.log(JovFilter)
-                
-                map.setFilter('plantYears', ['all', maxYearFilter, minYearFilter, NewFilter, AcqFilter, JovFilter, sicFilter, sicFilterMax]);
-            };
-            
-            
-            
-            function settingTheFilter(something) {
-                if (something == 0) {
-                    JvFun();
-                    
-                } else if (something == 1) {
-                    AqFun();
-                    
-                } else if (something == 2) {
-                    NwFun();
-                    
-                }
-            }
-            
-            
-            
-            
-            // Acquisition filter 
-            
-            function AqFun() {
-                if (AqF == 1) {
-                    AcqFilter = ['>=','IDNUM', 0];
-                    AqF = 0;
-                } else {
-                    AcqFilter = ['==', 'ACQUIRE', true];
-                    AqF = 1;
-                }
-                
-                console.log(AcqFilter)
-                
-                map.setFilter('plantYears', ['all', maxYearFilter, minYearFilter, NewFilter, AcqFilter, JovFilter, sicFilter, sicFilterMax]);
-            };
-            
-            // New Plant filter 
-            function NwFun() {
-                if (NwF == 1) {
-                    NewFilter = ['>=','IDNUM', 0];
-                    NwF = 0;
-                } else {
-                    NewFilter = ['==', 'NEW', true];
-                    NwF = 1;
-                }
-                
-                console.log(NewFilter)
-                
-                map.setFilter('plantYears', ['all', maxYearFilter, minYearFilter, NewFilter, AcqFilter, JovFilter, sicFilter, sicFilterMax]);
-            };
-            
-            
-            function sicGo() {
-                var inputVal = document.getElementById('sicVal').value;
-                if (inputVal == '') {
-                    sicFilter = ['>=', 'SIC1', 0];
-                    sicFilterMax = ['>=', 'SIC1', 0];    
-                } else if (inputVal == 'Food') {
-                    sicFilter = ['>=', 'SIC1', 2000];
-                    sicFilterMax = ['<=', 'SIC1', 2100];                    
-                } else if (inputVal == 'Misc') {
-                    sicFilter = ['>=', 'SIC1', 3700];
-                    sicFilterMax = ['<=', 'SIC1', 5000];
-                } else if (inputVal == 'Raw Materials') {
-                    sicFilter = ['>=', 'SIC1', 2200];
-                    sicFilterMax = ['<=', 'SIC1', 3299];
-                } else if (inputVal == 'Metal') {
-                    sicFilter = ['>=', 'SIC1', 3300];
-                    sicFilterMax = ['<=', 'SIC1', 3499];
-                } else if (inputVal == 'Machinery') {
-                    sicFilter = ['>=', 'SIC1', 3500];
-                    sicFilterMax = ['<=', 'SIC1', 3599];
-                } else if (inputVal == 'Electronics') {
-                    sicFilter = ['>=', 'SIC1', 3600];
-                    sicFilterMax = ['<=', 'SIC1', 3699];
-                } else if (inputVal == 'Automotives') {
-                    sicFilter = ['>=', 'SIC1', 3711];
-                    sicFilterMax = ['<=', 'SIC1', 3716];
-                } else if (inputVal.length == 4) {
-                    sicFilter = ['==', 'SIC1', Number(inputVal)];
-                    sicFilterMax = ['==', 'SIC1', Number(inputVal)];
-                } else if (inputVal.length == 9) {
-                    var splitter = inputVal.split(' ')
-                    sicFilter = ['<=', 'SIC1', Number(splitter[1])];
-                    sicFilterMax = ['>=', 'SIC1', Number(splitter[0])];
-                } else {
-                    document.getElementById('sicVal').innerHTML = "Error";
-                }
-                
-                
-                map.setFilter('plantYears', ['all', maxYearFilter, minYearFilter, NewFilter, AcqFilter, JovFilter, sicFilter, sicFilterMax]);
-            }
-           
-            function sicValClick() {
-                document.getElementById('sicVal').value = '';
-            }
-            
+            /* Switch JS code from https://webcodespace.com/how-to-create-a-three-state-toggle-switch-using-html-css-and-javascript/ */
             
             
            
