@@ -223,12 +223,19 @@
             //////////////////////////////////////////////////////////
             mapboxgl.accessToken = 'pk.eyJ1IjoicHRpbW15cyIsImEiOiJjbGc1ZnAxenYwMnZ6M3NvOG0zcGpzZmx4In0.drh78VNuPvJOOpSrS8wsGQ';
             
+            const bounds = [
+                [-180,-5],[-30,76]
+            ]
+            
             //  load map  //
             var map = new mapboxgl.Map({
                 container: 'map', // container id
                 style: 'mapbox://styles/ptimmys/cli0j2lad00ul01po2d4t5fyo',  // stylesheet location
                     center: [-95.7129, 37.0902], 
-                    zoom: 3
+                    zoom: 3,
+                    minZoom: 1, 
+                    maxZoom: 9,
+                    maxBounds: bounds,
             });
             
             // load data when map is loaded
@@ -264,11 +271,16 @@
                     paint: {
                         'circle-color': dataStyle[0],
                     }
-                });
-                
-                
-                
+                });  
             });
+            
+            // disable map rotation using right click + drag
+            map.dragRotate.disable();
+
+            // disable map rotation using touch rotation gesture
+            map.touchZoomRotate.disableRotation();
+            
+            
             //////////////////////////////////////////////////////////
             // mapbox://styles/ptimmys/cli0j2lad00ul01po2d4t5fyo
             
