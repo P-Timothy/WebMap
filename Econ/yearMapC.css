@@ -8,17 +8,27 @@
     background-color: #025927;
     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
     color: #fff9d1;
-    font-size: 10px;
     width: 100%;
     height: 50px;
 }
+
 #title{
+    position: inherit;
     font-size: 18px;
-    margin: 10px;
+    padding: 10px;
+    left: 10px;
+    height: 10px;
+    top: -11px;
 }
 #info {
+    position: absolute;
+    color: #fff9d1;
     cursor: help;   
     font-family: 'Roboto Mono', 'Times New Roman', monospace;
+    font-size: 22px;
+    padding: 0px;
+    right: 10px;
+    top: 8px;
 }
 #menue {
     position: absolute;
@@ -53,24 +63,27 @@
     right: 230px;
     background: #fff9d1;
 }
+#filterDiv {
+    padding: 0px 4px 0px 4px;
+}
 #FilterTitle {
     position: relative;
     margin: 0px;
     top: 0px;
-    left: 14px;
+    left: -2px;
 }
 #FilX {
     position: absolute;
     right: 10px;
-    top: 0px;
-    font-size: 24px;
+    font-size: 25px;
+    top: 3px;
     cursor: pointer;
 }
 #FilterX {
     position: absolute;
-    left: 10px;
-    top: 4px;
-    font-size: 24px;
+    right: 31px;
+    top: 6px;
+    font-size: 20px;
     cursor: help;
 }
 .slider-styled,
@@ -140,8 +153,9 @@
 }
 #TABBY {
     position: relative;
-    width: 4%;
-    left: 48%;
+    height: 20px;
+    width: 6%;
+    left: 47%;
     background-color: #025927;
     color: #fff9d1;
     text-align: center;
@@ -154,6 +168,42 @@
     color: #000;
     text-decoration: none;
     cursor: pointer;
+}
+.MapBoxCopy {
+    text-decoration: underline;
+}
+/*
+    font-family: 'Roboto Mono', monospace;
+    font-family: 'Yanone Kaffeesatz', sans-serif;
+    font-family: 'Roboto Mono', 'Times New Roman', monospace;
+
+*/
+#coppiedText{
+    display: none;
+    position: fixed;
+    z-index: 2;
+    bottom: 20px;
+    right: 20px;
+    animation: fadeOut 3s;
+}
+@keyframes fadeOut {
+    0% { opacity: 1; }
+    10% { opacity: 1; }
+    100% { opacity: 0; }
+}
+#pincopy{
+    position: relative;
+    padding: 10px;
+    background: white;
+    border-radius: 4px;
+    height: 18px;
+}
+#TabsBB {
+    font-family: 'Dosis', sans-serif;
+    font-size: 48px;
+    font-weight: normal;
+    position: relative;
+    top: -8px;
 }
 /* END TOP BAR */
 
@@ -172,16 +222,23 @@
     background-color: rgb(0,0,0); /* Fallback color */
     background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
 }
+#infoModal {
+    display: block;
+}
 
 /* Modal Content */
 .info-modal-content {
+    position: fixed;
+    left: 8%;
+    right: 8%;
+    top: 8%;
+    bottom: 8%;
+    align-content: center;
     font-family: 'Roboto Mono', 'Times New Roman', monospace;
     background-color: #025927;
     color: #fff9d1;
-    margin: auto;
     padding: 10px 20px;
     border: 1px solid #888;
-    width: 80%;
     border-radius: 10px;
 }
 
@@ -246,6 +303,38 @@
 }
 .miscManf {
     color:#4D5859 ;
+}
+#rtwsleg{
+    position: absolute;
+    left: 30px;
+    bottom: 8px;
+}
+#RightToWorkLegend  {
+    display: none;
+}
+.rtwSquareClass {
+    position: absolute;
+    color: #e0f0e0;
+    font-size: 34px;
+    bottom: -1px;
+    left: 8px;
+    z-index: 0;
+}
+.rtwSquareClassA {
+    position: absolute;
+    color: rgba(137, 214, 137, 1);
+    font-size: 29px;
+    bottom: 3px;
+    left: 10px;
+    z-index: 2;
+}
+.rtwSquareClassB {
+    position: absolute;
+    color: rgba(30, 69, 30, 0.3);
+    font-size: 24px;
+    bottom: 4px;
+    left: 11px;
+    z-index: 1;
 }
 
 /* The Close Button */

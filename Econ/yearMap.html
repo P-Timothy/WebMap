@@ -10,7 +10,7 @@
     <link href="nouislider.css" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Dosis:wght@400;500&family=Roboto+Mono&family=Yanone+Kaffeesatz:wght@400;500&display=swap" rel="stylesheet">
     <script src="nouislider.js"></script>
         <!-- https://p-timothy.github.io/WebMap/Econ/yearMap.html -->
     <style>
@@ -30,7 +30,8 @@
         
         <div id='topbar'>
             <div id="titlebar">
-                <h2 id="title"> Japanese Manufacturing Plants 1912-1992 <sup id='info' onclick="infoBtn()">i</sup> <span id="menue">&vellip;</span> </h2>
+                <h2 id="title">  Japanese Manufacturing Plants 1912-1992  </h2>
+                <sup id='info' onclick="infoBtn()">&#128712;</sup>
                 
             </div>
 
@@ -66,7 +67,7 @@
             </div>
             
             <div id="TABBY">
-                <span id='TabsBB'>&minus;</span>
+                <span id='TabsBB'>&#x5e;</span>
             </div>
         </div>
         
@@ -74,7 +75,7 @@
         
         <div id='Filters'>
             <div id="filterDiv">
-                <span id="FilterX">&vellip;</span>
+                <span id="FilterX">&#128712;</span>
                 <span id="FilterTitle">Filter:</span>
                 <span class="closeLeg" onclick="FilBtn()" id='FilX'>&times;</span>
             </div>
@@ -135,18 +136,48 @@
             <div class="info-modal-content">
                 <span class="close">&times;</span>
 
-                <h2> Additional Info. </h2>
+                <h2> Project Overview. </h2>
                 
                 <p>
+                    Goal - The goal of this project was to visualize a dataset used for research that has not been visualized yet. The study looked into the aggregation of foreign manufacturing plants in the United States. Specifically looking into Japanese investment and acquisition of manufacturing plants in the United States of America.
+                    <br><br>
+                    
+                    <br>
                     Datasets: 
+                    <br>
+                    Manufacturing Plants - The point dataset used for this web map was provided by Bruce Blonigen. It is comprised of single points representing a Manufacturing plant acquired or constructed by Japanese Investors. This dataset contains additional variables, those being; SIC number, types of products, year established, locational information, as well as additional information about the parent companies. The GeoJson used for this project can be found <a id="link" href="https://github.com/p-timothy/WebMap/blob/main/Econ/EconUpdated.geojson" target="_blank" rel="noopener noreferrer"> here</a>.
                     <br><br>
-                    Points -    The point dataset used for this web map was provided by Bruce Blonigen. It is comprised of single points representing a Japanese Manufacturing plant in the United States of America. This dataset contains additional variables like, SIC number, types of prouducts, year established, locational information, as well as additional infomration of the parent companies. The GeoJson used for this project can be found <a id="link" href="https://github.com/p-timothy/WebMap/blob/main/Econ/EconUpdated.geojson"> here</a>.
-                    <br><br>
-                    Right To Work - The state polygons used come from the 2018 census, and were the 20m shapefiles. Data about states right to work was then added to the state polygon layer, this data was found at <a id="link" href="https://nrtwc.org/facts/state-right-to-work-timeline-2016/"> The National Right To Work Committee</a>. Visulizing all states with right to work dates before 1980.
+                    Right To Work - The state polygons used come from the 2018 census and were the 20m shapefiles. Data about states' right to work was then added to the state polygon layer, this data was found at <a id="link" href="https://nrtwc.org/facts/state-right-to-work-timeline-2016/" target="_blank" rel="noopener noreferrer"> The National Right To Work Committee</a>. Visualizing all states with right-to-work dates before 1980.
                     <br><br>
                     Base Map -  The base map currently being used is a slightly customized version of the monochrome MapBox layer. (mapbox://styles/ptimmys/cli0j2lad00ul01po2d4t5fyo) 
+                    <br><br>
+                    Sources 
+                    <br>
+                    [<a href="https://github.com/p-timothy/WebMap/blob/main/Econ/EconUpdated.geojson" id="link" target="_blank" rel="noopener noreferrer">
+                    Manufacturing Plants
+                    </a>]
+                    
+                    [<a href="https://nrtwc.org/facts/state-right-to-work-timeline-2016/" id="link" target="_blank" rel="noopener noreferrer">
+                    Right To Work States
+                    </a>]
+                    
+                    [<span id="link" class="MapBoxCopy" onclick="MapboxStyle()">
+                    Mapbox Style
+                    </span>]
+                    <br>
+                    [<a href="https://refreshless.com/nouislider/" id="link" target="_blank" rel="noopener noreferrer">
+                    NoUiSlider
+                    </a>]
+                    
+                    [<a href="https://webcodespace.com/how-to-create-a-three-state-toggle-switch-using-html-css-and-javascript/" id="link" target="_blank" rel="noopener noreferrer">
+                    CSS Three Position Toggles
+                    </a>]
                 </p>
             </div>
+        </div>
+        
+        <div id="coppiedText">
+            <p id="pincopy">Link was coppied to your clipboard!</p>
         </div>
         
         <!-- Filter Info Modal -->
@@ -159,12 +190,16 @@
                 <p>
                     Filters: 
                     <br><br>
-                    Switches - Filter by joint venture, acquisitions, or new manufacturing plants by switching a flip! The middle position means there is no filter currently being applied, the right position (green) means the filter for that layer is active, and the left position (red) means that layer is filtered out. <br>
-                    Example: If the Joint Venture filter is green, all Joint Venture manufacuring plants will be shown (this includes some Acquisition plants). In order to just view the Joint Venture layer, the Joint Venture switch should be green and the Acquisition and New switches should be red. *Note that the datasets has some plants which are both Joint Ventures and Acquisitions, but no New plant is a Joint Venture or Aquisition. 
+                    Switches - Filter by Joint Venture, Acquisitions, or New manufacturing plants by switching a flip! The middle position means there is no filter currently being applied, the right position (green) means the filter for that layer is active, and the left position (red) means that the layer is filtered out. <br>
+                    Example: If the Joint Venture filter is green, all Joint Venture manufacturing plants will be shown (this includes some Acquisition plants). In order to just view the Joint Venture layer, the Joint Venture switch should be green and the Acquisition and New switches should be red. *Note that the datasets have some plants which are both Joint Ventures and Acquisitions, but no New plant is a Joint Venture or Acquisition.
                     <br><br>
                     SIC filter - Filter by individual Standard Industrial Classification (ex: '3711'), SIC ranges (ex: '3100 3560'), or select a predefined range (ex: 'Machinery').
+                    <br>
+                    [<a href="https://www.osha.gov/data/sic-search?field_sic_number_value=3711&title_and_body=" id='link' target="_blank" rel="noopener noreferrer">SIC value search</a>] 
+                    [<a href="https://www.sec.gov/corpfin/division-of-corporation-finance-standard-industrial-classification-sic-code-list" id='link' target="_blank" rel="noopener noreferrer">SIC value list</a>]
+                    
                     <br><br>
-                    Right to Work States - This layer was derived from the <a href="https://nrtwc.org/facts/state-right-to-work-timeline-2016/" id='link'> National Right to Work Committee </a> and was then joined to the <a href="https://www.census.gov/geographies/mapping-files/time-series/geo/carto-boundary-file.html" id="link">2018 sensus Cartographic Boundary Files</a> 
+                    Right to Work States - This layer was derived from the <a href="https://nrtwc.org/facts/state-right-to-work-timeline-2016/" id='link' target="_blank" rel="noopener noreferrer"> National Right to Work Committee </a> and was then joined to the <a href="https://www.census.gov/geographies/mapping-files/time-series/geo/carto-boundary-file.html" id="link" target="_blank" rel="noopener noreferrer">2018 sensus Cartographic Boundary Files</a> 
                     <br>
                     This layer shows all states with Right to Work laws pre 1980.
                     <br><br>
@@ -176,9 +211,8 @@
         
         
         <div class="LegendContainer">
-            
             <div id="Ltitle">
-                <span id='LegTitle'>- Legend: &nbsp;</span>
+                <span id='LegTitle'>Legend: &nbsp;</span>
                 <span class="closeLeg" onclick="LegBtn()" id='legX'>&times;</span>
             </div>
             <div id="LegendItems">
@@ -216,11 +250,34 @@
                     <span class="miscManf" id="miskManf">&#11044;</span>
                     <span class="layerDescription">Misc. &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (sic: 3700-3999)</span>
                 </div>
+                <div id="RightToWorkLegend">
+                    <br>
+                    <span class="legHi" id="legendHighlights"></span>
+                    <span class="rtwSquareClassA" id="rtwSquare">&#x25A1;</span>
+                    <span class="rtwSquareClassB" id="rtwSquare">&#x25A0;</span>
+                    <span class="layerDescription" id='rtwsleg'>Right To Work States - pre 1980</span>
+                </div>
             </div>
         </div>
        
+<!--   <a target="_blank" href="https://icons8.com/icon/4516/new-moon">New Moon</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>
+
+<a target="_blank" href="https://icons8.com/icon/4048/factory">Factory</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>
+
+<a target="_blank" href="https://icons8.com/icon/3954/barbell">Barbell</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>
+
+<a target="_blank" href="https://icons8.com/icon/4054/gear">Gear</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>
+
+<a target="_blank" href="https://icons8.com/icon/86540/electric">Electric</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>
+
+<a target="_blank" href="https://icons8.com/icon/3788/layers">Layers</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>
+
+<a target="_blank" href="https://icons8.com/icon/3271/car">Auto</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>
+
+<a target="_blank" href="https://icons8.com/icon/7622/ingredients">Ingredients</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>   -->
         
         <script>
+            
             
             //////////////////////////////////////////////////////////
             //                     Mapbox setup                     //
@@ -244,6 +301,56 @@
             
             // load data when map is loaded
             map.on('load', function(){
+               
+                map.loadImage('./Symbols/auto-img.png',
+                             (error, image) => {
+                    if (error) throw error;
+                    
+                    map.addImage('auto', image);
+                });
+                
+                map.loadImage('./Symbols/metl-img.png',
+                             (error, image) => {
+                    if (error) throw error;
+                    
+                    map.addImage('metal', image);
+                });
+                
+                map.loadImage('./Symbols/elec-img.png',
+                             (error, image) => {
+                    if (error) throw error;
+                    
+                    map.addImage('elec', image);
+                });
+                
+                map.loadImage('./Symbols/mach-img.png',
+                             (error, image) => {
+                    if (error) throw error;
+                    
+                    map.addImage('mach', image);
+                });
+                
+                map.loadImage('./Symbols/food-img.png',
+                             (error, image) => {
+                    if (error) throw error;
+                    
+                    map.addImage('food', image);
+                });
+                
+                map.loadImage('./Symbols/text-img.png',
+                             (error, image) => {
+                    if (error) throw error;
+                    
+                    map.addImage('text', image);
+                });
+                
+                map.loadImage('./Symbols/misc-img.png',
+                             (error, image) => {
+                    if (error) throw error;
+                    
+                    map.addImage('misc', image);
+                });
+                
                 
                 // add manfplants geojson source
                 map.addSource('ManfPlants', {
@@ -257,15 +364,50 @@
                     data: './rtwStates.geojson',
                 });
                 
+                map.addSource('rtws', {
+                    'type': 'geojson',
+                    data: './rtwStates.geojson',
+                });
+                
                 map.addLayer({
                         'id': 'RTWS',
                         'type': 'fill',
                         'source': 'rightToWorkStates',
                         paint: {
-                            'fill-color': "rgba(0, 0, 0, 0.3)",
+                            'fill-color': "rgba(30, 69, 30, 0.3)",
                         }
                     });
                 map.setFilter('RTWS', ['==', 'id', 0]);
+                
+                map.addLayer({
+                    'id': 'RTWSline',
+                    'type': 'line',
+                    'source': 'rightToWorkStates',
+                    paint: {
+                        'line-color': "rgba(137, 214, 137, 1)",
+                        'line-width': 1,
+                    }
+                });
+                
+                
+//               ManfPlants.features.forEach(function (feature) {
+//                    var symbol = feature.properties['icon'];
+//                    var layerID = symbol + '-img';
+//                    
+//                    if (!map.getLayer(symbol)) {
+//                    map.addLayer({
+//                        'id' : symbol,
+//                        'type' : 'symbol',
+//                        'source' : 'ManfPlants',
+//                        'layout' : {
+//                            'icon-image': symbol,
+//                            'icon-allow-overlap': true
+//                        },
+//                        'filter': ['==', 'icon', symbol]
+//                    });  
+//                    }
+//                });
+                
                 
                 // add geojson as a layer
                 map.addLayer({
@@ -283,6 +425,9 @@
 
             // disable map rotation using touch rotation gesture
             map.touchZoomRotate.disableRotation();
+            
+            
+            
             
             
             //////////////////////////////////////////////////////////
@@ -397,13 +542,14 @@
             var modal = document.getElementById("infoModal");
             var Leg = document.getElementById("LegendItems");
             var LegX = document.getElementById('legX');
-            var tab = document.getElementById('TabsBB');
             var TABBIE = document.getElementById("TABBY");
             var usrCon = document.getElementById('userControl');
             var filCB = document.getElementById('FiltersCheckBox');
             var filbox = document.getElementById('FilterHiddenSection');
             var filX = document.getElementById('FilterX');
             var filHelp = document.getElementById('filterInfoModal');
+            var cT = document.getElementById('coppiedText');
+            var ccmsg = 0;
 
             // Get the button that opens the modal
             var btn = document.getElementById("myBtn");
@@ -450,10 +596,14 @@
                 if (playToggle == 0) {
                     usrCon.style.display = 'block';
                     TABBIE.style.top = '105px';
+                    TABBIE.style.transform = "rotate(0deg)";
+                    TABBIE.style.borderRadius = "0px 0px 5px 5px";
                     playToggle = 1;
                 } else {
                     usrCon.style.display = 'none';
                     TABBIE.style.top = '50px';
+                    TABBIE.style.transform = "rotate(180deg)";
+                    TABBIE.style.borderRadius = "5px 5px 0px 0px";
                     playToggle = 0;
                 }
             }
@@ -480,16 +630,33 @@
                 
                 if (rtwsOn == 0) {
                     map.setFilter('RTWS', ['==', 'rtwID', 1]);
+                    document.getElementById('RightToWorkLegend').style.display = 'block';
                     rtwsOn = 1;
                     
                 } else if (rtwsOn == 1) {
                     map.setFilter('RTWS', ['==', 'id', 0]);
+                    document.getElementById('RightToWorkLegend').style.display = 'none';
                     rtwsOn = 0;
                 }
 
             };
             
+            function MapboxStyle() {
+                let coppyTxt = 'mapbox://styles/ptimmys/cli0j2lad00ul01po2d4t5fyo';
+                navigator.clipboard.writeText(coppyTxt);
+                coppyToClipboardMessage();
+                setTimeout(coppyToClipboardMessage, 3000);
+            };
             
+            function coppyToClipboardMessage() {
+                if (ccmsg == 0) {
+                    cT.style.display = "block";
+                    ccmsg = 1;
+                } else {
+                    cT.style.display = "none";
+                    ccmsg = 0;
+                }
+            };
             
             // js from https://webcodespace.com/how-to-create-a-three-state-toggle-switch-using-html-css-and-javascript/ //
             var jvbuttons = document.getElementsByClassName("jvButton");
@@ -660,8 +827,6 @@
                 if (something == 'nojv') {
                     JovFilter = ['!=', 'JV', true];
                     
-                    console.log(JovFilter);
-                    
                 } else if (something == 'jv') {
                     JovFilter = ['>=','IDNUM', 0];
                     
@@ -687,7 +852,7 @@
                     NewFilter = ['==', 'NEW', true];
                 }
                 
-                map.setFilter('plantYears', ['all', maxYearFilter, minYearFilter, NewFilter, AcqFilter, JovFilter, sicFilter, sicFilterMax]);
+                setFilterFunction();
             };
             
             
@@ -823,7 +988,7 @@
                 }
                 
                 
-                map.setFilter('plantYears', ['all', maxYearFilter, minYearFilter, NewFilter, AcqFilter, JovFilter, sicFilter, sicFilterMax]);
+                setFilterFunction();
             }
            
             function sicValClick() {
