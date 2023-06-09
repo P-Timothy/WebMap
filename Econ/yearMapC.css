@@ -1,5 +1,8 @@
-/* Main UI Styles */
-
+#map{
+    position: absolute;
+    top: 50px;
+    
+}
 /*  TOP  BAR  */
 #titlebar {
     position: absolute;
@@ -13,10 +16,10 @@
 }
 
 #title{
-    position: inherit;
+    position: relative;
+    text-align: center;
     font-size: 18px;
     padding: 10px;
-    left: 10px;
     height: 10px;
     top: -11px;
 }
@@ -59,10 +62,54 @@
     position: absolute;
     top: 24px;
     height: 10px;
-    left: 220px;
-    right: 230px;
+    left: 130px;
+    right: 77px;
     background: #fff9d1;
 }
+
+
+
+#BtmLck {
+    position: absolute;
+    cursor: pointer;
+    left: 60px;
+    top: 8px;
+}
+#TopLock {
+    position: absolute;
+    cursor: pointer;
+    right: 11px;
+    top: 10px;
+}
+
+.tooltip {
+    position: relative;
+    display: inline-block;
+    border-color: black;
+}
+/* Tooltip text */
+.switch .tooltiptext {
+    visibility: hidden;
+    width: 120px;
+    top: 100%;
+    left: 50%;
+    margin-left: -60px;
+    background-color: #c9c9c9;
+    color: black;
+    text-align: center;
+    padding: 5px 0;
+    border-radius: 6px;
+
+    /* Position the tooltip text - see examples below! */
+    position: absolute;
+    z-index: 1;
+}
+
+.switch:hover .tooltiptext {
+    visibility: visible;
+}
+
+
 #filterDiv {
     padding: 0px 4px 0px 4px;
 }
@@ -124,28 +171,23 @@
     position: relative;
     font-size: 16px;
     margin: 10px;
-    top: 7px;
-    left: 8px;
+    top: 10px;
+    left: 0px;
 }
 #play {
     position: absolute;
     left: 10px;
 }
-#BtmLck {
-    margin-left: 0px;
-}
+
 .yearClassR {
-    position: absolute;
+    position: relative;
     font-size: 16px;
-    margin: 10px 10px;
+    margin: 10px;
     top: 7px;
-    right: 198px;
+    right: 0px;
     width: 10px;
 }
-#TopLock {
-    position: absolute;
-    right: 111px;
-}
+
 #FilterButton {
     position: absolute;
     right: 14px;   
@@ -264,7 +306,7 @@
 .LegendContainer {
     position: absolute;
     font-family: 'Roboto Mono', monospace;
-    font-size: 13px;
+    font-size: 14px;
     background-color: #025927;
     color: #fff9d1;
     bottom: 40px;
@@ -296,7 +338,7 @@
     color:#00AEEF ;
 }
 .electronics {
-    color:#FFF200 ;
+    color:#FED103 ;
 }
 .auto {
     color:#EC008C ;
@@ -322,7 +364,7 @@
 }
 .rtwSquareClassA {
     position: absolute;
-    color: rgba(137, 214, 137, 1);
+    color: rgba(137, 176, 137, 0.3);
     font-size: 29px;
     bottom: 3px;
     left: 10px;
@@ -377,12 +419,14 @@
 
 /* FILTER WINDOW CODE */
 #Filters {
-    position: absolute;font-family: 'Roboto Mono', monospace;
+    position: absolute;
+    font-family: 'Roboto Mono', monospace;
+    font-size: 14px;
     bottom: 40px;
     right: 40px;
     background-color: #025927;
     color: #fff9d1;
-    width: 180px;
+    width: 250px;
     margin-left: 10px;
     padding: 10px;
     border-radius: 10px;
@@ -408,8 +452,31 @@
 }
 
 
+
+#jvFilter {
+    padding: 8px 0px;
+}
+
+#checkers {
+    appearance: checkbox;
+    margin: 4px 0px;
+    display: inline-block;
+    height: 15px;
+    width: 15px;
+    background-color: white;
+    opacity: 1;
+    border-radius: 2px;
+}
+#rtwText{
+    position: relative;
+    top: -2px;
+}
+#rtwsFilter {
+    position: relative;
+    padding: 2px;
+    left: 0px;
+}
 #sicVal {
-    display: block;
     margin: 2px 0px;
     width: 60%;
     display: inline-block;
@@ -418,9 +485,8 @@
     opacity: 1;
     border-radius: 6px;
 }
-#jvFilter {
-    padding: 8px 0px;
-}
+
+
 
 button {
     border-radius: 5px;
@@ -444,10 +510,11 @@ input {
 
 #playbutton {
     color: #fffded;
-    width: 50px;
+    width: 35px;
     font-size: 12px;
     text-align: center;
-    top: 0px;
+    top: -3px;
+    bottom: 4px;
 }
 #playbutton:active {
     transform: scale(0.98);
@@ -480,6 +547,21 @@ input {
 
 
 /* Switch CSS code from https://www.w3schools.com/howto/tryit.asp?filename=tryhow_css_switch */
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 36px;
+    font-size: 12px;
+    text-align: center;
+    
+}
+
+
+.switch input { 
+    opacity: 0;
+}
+
 .switch {
     position: relative;
     display: inline-block;
@@ -549,7 +631,6 @@ input:checked + .slider:before {
 
 
 
-
 /* Switch CSS code from https://webcodespace.com/how-to-create-a-three-state-toggle-switch-using-html-css-and-javascript/ */
 
 
@@ -565,6 +646,7 @@ input {
 input:hover {
     cursor: pointer;
 }
+
 .jvtri-state-toggle {
     display: inline-flex;
     justify-content: center;
@@ -584,6 +666,9 @@ input:hover {
     border-radius: 30px;
 }
 
+
+
+/*Three position toggle switches (fitler)*/
 #jvone {
     background-color: red;
 }
@@ -618,7 +703,6 @@ input:hover {
 #nwthree {
     background-color: lawngreen;
 }
-
 
 
 
