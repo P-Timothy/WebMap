@@ -2,7 +2,7 @@
 <html>
     <head>
     <meta charset="utf-8">
-    <title>Filter symbols by toggling a list</title>
+    <title>Industrial groupings and foreign direct investment</title>
     <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
     <link href="https://api.mapbox.com/mapbox-gl-js/v2.2.0/mapbox-gl.css" rel="stylesheet">
     <script src="https://api.mapbox.com/mapbox-gl-js/v2.2.0/mapbox-gl.js"></script>
@@ -30,7 +30,7 @@
         
         <div id='topbar'>
             <div id="titlebar">
-                <h2 id="title">  Japanese Manufacturing Plants 1912-1992  </h2>
+                <h3 id="title">  Industrial groupings and foreign direct investment  </h3>
                 <sup id='info' onclick="infoBtn()">&#128712;</sup>
                 
             </div>
@@ -189,6 +189,10 @@
             <p id="pincopy">Link was coppied to your clipboard!</p>
         </div>
         
+        <div id="infoModalClosed">
+            <p id="pincopyy">Use your mouse to pan and zoom!</p>
+        </div>
+        
         <!-- Filter Info Modal -->
         <div id="filterInfoModal" class="modal">
           <!-- Modal content -->
@@ -287,15 +291,16 @@
         
         <script>
             
-            
 //Mapbox setup//
             
             mapboxgl.accessToken = 'pk.eyJ1IjoicHRpbW15cyIsImEiOiJjbGc1ZnAxenYwMnZ6M3NvOG0zcGpzZmx4In0.drh78VNuPvJOOpSrS8wsGQ';
+            
             
             const bounds = [
                 [-180,-5], //SW corner
                 [-30,76]   //NE corner
             ]
+            
             
             //  load map  //
             var map = new mapboxgl.Map({
@@ -309,9 +314,11 @@
                 maxBounds: bounds,
             });
             
+            
             // load data when map is loaded
             map.on('load', () => {
                
+                
                 // Load In Custom Images
                 map.loadImage('./Symbols/auto-img.png',
                              (error, image) => {
@@ -363,7 +370,6 @@
                 });
                 
                 
-                
                 //Add In Data Sources
                 // add manfplants geojson source
                 map.addSource('ManfPlants', {
@@ -375,6 +381,7 @@
                     'type': 'geojson',
                     data: './Econ.geojson',
                 });
+                
                 
                 // add rtws geojson source
                 map.addSource('rightToWorkStates', {
@@ -409,7 +416,7 @@
                     }
                 });
                 
-
+                
                 // add geojson as a layer
                 map.addLayer({
                     'id': 'plantYears',
@@ -419,6 +426,7 @@
                         'circle-color': dataStyle[0],
                     }
                 });  
+                
                 
                 map.addLayer({
                     'id': 'plant',
@@ -431,6 +439,7 @@
                     },
                     'filter': ['==', 'IDNUM', 0]
                 });  
+                
                 
 // Popups!
     // Symbol Layer
@@ -464,6 +473,7 @@
                     map.getCanvas().style.cursor = '';
                 });
                 
+                
     // Point Layer
                 map.on('click', 'plantYears', (e) => {
                     const coordinates = e.features[0].geometry.coordinates.slice();
@@ -488,15 +498,16 @@
                     )
                         .addTo(map);
                 });
+                
+                
                 map.on('mouseenter', 'plantYears', () => {
                     map.getCanvas().style.cursor = 'pointer';
                 });
+                
+                
                 map.on('mouseleave', 'plantYears', () => {
                     map.getCanvas().style.cursor = '';
                 });
-                
-                
-                
             });
             
             // disable map rotation using right click + drag
@@ -508,7 +519,6 @@
             // Add zoom and rotation controls to the map.
             // *Note: Not in use as stylizing the map controls is, to me, impossible :(
             // map.addControl(new mapboxgl.NavigationControl());
-            
             
             
 //Variabels//
@@ -561,7 +571,6 @@
                                    ]
                                 ]];
             
-
             
             const yearLi = [
                 1960, 1961, 1962, 1963, 1964, 1965, 1966, 
@@ -571,6 +580,7 @@
                 1988, 1989, 1990, 1991, 1992
             ];
             
+            
             // filter variables
             var JovFilter = ['>=','IDNUM', 0];
             var AcqFilter = ['>=','IDNUM', 0];
@@ -579,6 +589,7 @@
             var maxYearFilter = ['>=', 'YEAR', 4000];
             var sicFilter = ['>=', 'SIC1', 0];
             var sicFilterMax = ['>=', 'SIC1', 0];
+            
             
             // toggle state variables
             var legendToggle = 1;
@@ -591,10 +602,12 @@
             var JvF = 0;
             var symOn = 0;
             
+            
             var minvalue = 0;
             var maxvalue = 32;
             var LockBottom = true;
             var LockTop = false;
+            
             
             // Elemt variables
             let ziggy = document.getElementById('minYear');
@@ -612,30 +625,26 @@
             var filHelp = document.getElementById('filterInfoModal');
             var cT = document.getElementById('coppiedText');
             var ccmsg = 0;
+            var cmsg = 0;
             // Get the button that opens the modal
             var btn = document.getElementById("myBtn");
             // Get the <span> element that closes the modal
             var span = document.getElementsByClassName("close")[0];
             
             
-            
-            
-            
-            
-            
-            
-            
-            
 // Modal
+            
             
             // open modal on click
             function infoBtn () {
                 modal.style.display = "block";
             }
             
+            
             filX.onclick = function() {
                 filHelp.style.display = "block";
             }
+            
             
             
             // close modal on click
@@ -644,14 +653,20 @@
                 filHelp.style.display = 'none';
             }
             
+            
             // When the user clicks anywhere outside of the modal, close it
             window.onclick = function(event) {
-              if (event.target == modal) {
-                modal.style.display = "none";
-              } else if (event.target == filHelp) {
-                filHelp.style.display = "none";
-              }
+                if (event.target == modal) {
+                    modal.style.display = "none";
+                    closeInfoHelper();
+                    setTimeout(closeInfoHelper, 3000);
+                } else if (event.target == filHelp) {
+                    filHelp.style.display = "none";
+                    closeInfoHelper();
+                    setTimeout(closeInfoHelper, 3000);
+                }
             }
+            
             
             // copy mapbox style to clipboard when clicked in Info Pannel
             function MapboxStyle() {
@@ -661,9 +676,6 @@
                 setTimeout(coppyToClipboardMessage, 3000);
             };
             
-            
-            
-
             
 // Hide Time Player Drop Down
             // Time player closing tab, rotate 180 deg, and change border radius when clicked
@@ -698,6 +710,7 @@
                 }
             }
             
+            
             // Toggle Filter Button
             function FilBtn () {
                 if (filterTog == 1) {
@@ -710,6 +723,7 @@
                     filterTog = 1;
                 }
             }
+            
             
             // Right to work states add data 
             function rtwsBtn() {
@@ -724,6 +738,7 @@
                     rtwsOn = 0;
                 }
             };
+            
             
             // Symbol layer
             function symbolBtn() {
@@ -751,10 +766,22 @@
                 }
             };
             
+            function closeInfoHelper() {
+                if (cmsg == 0) {
+                    document.getElementById("infoModalClosed").style.display = "block";
+                    cmsg = 1;
+                } else {
+                    document.getElementById("infoModalClosed").style.display = "none";
+                    cmsg = 0;
+                }
+            };
+            
+            
             // js from https://webcodespace.com/how-to-create-a-three-state-toggle-switch-using-html-css-and-javascript/ //
             var jvbuttons = document.getElementsByClassName("jvButton");
             var jvarr = [...jvbuttons];
-
+            
+            
             jvarr.forEach((element, index) => {
                 element.addEventListener("click", () => {
                     element.style.opacity = "1";
@@ -767,10 +794,12 @@
                     });
                 });
             });
-
+            
+            
             var aqbuttons = document.getElementsByClassName("aqButton");
             var aqarr = [...aqbuttons];
-
+            
+            
             aqarr.forEach((element, index) => {
                 element.addEventListener("click", () => {
                     element.style.opacity = "1";
@@ -783,10 +812,12 @@
                     });
                 });
             }); 
-
+            
+            
             var nwbuttons = document.getElementsByClassName("nwButton");
             var nwarr = [...nwbuttons];
-
+            
+            
             nwarr.forEach((element, index) => {
                 element.addEventListener("click", () => {
                     element.style.opacity = "1";
@@ -814,8 +845,6 @@
             /////////////////////////////////////////////////////////
             
             
-            
-            
             var slideEvList = noUiSlider.create(slider, {
                 start: [0, 32],
                 connect: true,
@@ -827,7 +856,6 @@
                 behaviour: 'tap-drag',
             });
                 
-            
             
             // play button function
             function go() {
@@ -844,18 +872,27 @@
                 }
             };
             
+            
             // call the timer Function 
             function runTimer(){
                 timer = setInterval(myTimer, 1000);
             };
+            
+            
             // timer funciton, updates slider values
             function myTimer() {
+                
+                
                 var years = slider.noUiSlider.get();
+                
+                
                 if (LockBottom == true) {
                     var minyears = Number(years[0]);
                 } else {
                     var minyears = Number(years[0]) + 1;
                 }
+                
+                
                 if (LockTop == true) {
                     var maxyears = Number(years[1]);
                 } else {
@@ -874,8 +911,6 @@
                 document.getElementById('maxYear').textContent = Number(heldValues[1]);
                 document.getElementById('minYear').textContent = Number(heldValues[0]);
             };
-            
-            
             
             
             function lockbottom() {
@@ -938,10 +973,7 @@
             };
             
             
-            
-            
-            
-            
+// Legend filter code
             const food = document.getElementById('food');
             const rawMaterials = document.getElementById('rawMaterials');
             const metal = document.getElementById('metal');
@@ -949,9 +981,6 @@
             const electronics = document.getElementById('electronics');
             const auto = document.getElementById('auto');
             const miscManf = document.getElementById('miscManf');
-            
-            
-            
             
             
             function sicGo() {
@@ -968,8 +997,6 @@
                     document.getElementById('miskManf').classList.remove('HiddenLegend');
                     
                     
-                    
-                    
                 } else if (inputVal == 'Food') {
                     sicFilter = ['>=', 'SIC1', 2000];
                     sicFilterMax = ['<=', 'SIC1', 2100];
@@ -981,7 +1008,7 @@
                     document.getElementById('auto').classList.add('HiddenLegend');
                     document.getElementById('miskManf').classList.add('HiddenLegend');
                 
-                
+                    
                 } else if (inputVal == 'Misc') {
                     sicFilter = ['>=', 'SIC1', 3700];
                     sicFilterMax = ['<=', 'SIC1', 5000];
@@ -993,11 +1020,10 @@
                     document.getElementById('electronics').classList.add('HiddenLegend');
                     document.getElementById('food').classList.add('HiddenLegend');
                 
-                
+                    
                 } else if (inputVal == 'Raw Materials') {
                     sicFilter = ['>=', 'SIC1', 2200];
-                    sicFilterMax = ['<=', 'SIC1', 3299];
-                    document.getElementById('rawMaterials').classList.remove('HiddenLegend');
+                    sicFilterMax = ['<=', 'SIC1', 3299]; document.getElementById('rawMaterials').classList.remove('HiddenLegend');
                     document.getElementById('metals').classList.add('HiddenLegend');
                     document.getElementById('food').classList.add('HiddenLegend');
                     document.getElementById('machinery').classList.add('HiddenLegend');
@@ -1005,7 +1031,7 @@
                     document.getElementById('auto').classList.add('HiddenLegend');
                     document.getElementById('miskManf').classList.add('HiddenLegend');
                
-                
+                    
                 } else if (inputVal == 'Metal') {
                     sicFilter = ['>=', 'SIC1', 3300];
                     sicFilterMax = ['<=', 'SIC1', 3499];
@@ -1017,7 +1043,7 @@
                     document.getElementById('auto').classList.add('HiddenLegend');
                     document.getElementById('miskManf').classList.add('HiddenLegend');
                 
-                
+                    
                 } else if (inputVal == 'Machinery') {
                     sicFilter = ['>=', 'SIC1', 3500];
                     sicFilterMax = ['<=', 'SIC1', 3599];
@@ -1029,11 +1055,10 @@
                     document.getElementById('auto').classList.add('HiddenLegend');
                     document.getElementById('miskManf').classList.add('HiddenLegend');
                 
-                
+                    
                 } else if (inputVal == 'Electronics') {
                     sicFilter = ['>=', 'SIC1', 3600];
-                    sicFilterMax = ['<=', 'SIC1', 3699];
-                    document.getElementById('electronics').classList.remove('HiddenLegend');
+                    sicFilterMax = ['<=', 'SIC1', 3699]; document.getElementById('electronics').classList.remove('HiddenLegend');
                     document.getElementById('metals').classList.add('HiddenLegend');
                     document.getElementById('rawMaterials').classList.add('HiddenLegend');
                     document.getElementById('machinery').classList.add('HiddenLegend');
@@ -1041,7 +1066,7 @@
                     document.getElementById('auto').classList.add('HiddenLegend');
                     document.getElementById('miskManf').classList.add('HiddenLegend');
                 
-                
+                    
                 } else if (inputVal == 'Automotives') {
                     sicFilter = ['>=', 'SIC1', 3711];
                     sicFilterMax = ['<=', 'SIC1', 3716];
@@ -1053,18 +1078,18 @@
                     document.getElementById('food').classList.add('HiddenLegend');
                     document.getElementById('miskManf').classList.add('HiddenLegend');
                
-                
+                    
                 } else if (inputVal.length == 4) {
                     sicFilter = ['==', 'SIC1', Number(inputVal)];
                     sicFilterMax = ['==', 'SIC1', Number(inputVal)];
                
-                
+                    
                 } else if (inputVal.length == 9) {
                     var splitter = inputVal.split(' ')
                     sicFilter = ['<=', 'SIC1', Number(splitter[1])];
                     sicFilterMax = ['>=', 'SIC1', Number(splitter[0])];
                
-                
+                    
                 } else {
                     document.getElementById('sicVal').innerHTML = "Error";
                 }
@@ -1073,11 +1098,10 @@
                 setFilterFunction();
             }
            
+            // clear SIC input on click
             function sicValClick() {
                 document.getElementById('sicVal').value = '';
             }
-            
-            
             
             
             slideEvList.on('update', function(values){
@@ -1088,7 +1112,6 @@
                 maxvalue = Number(values[1]);
                 maxvalue = yearLi[maxvalue];
                 maxYearFilter = ['<=', 'YEAR', maxvalue]
-                    
                 
                 setFilterFunction();
 
@@ -1096,6 +1119,7 @@
 
                 yearTextContent(filters);
                 });
+            
             
             slider.noUiSlider.on('update', function (values, handle) {
                 var value = values[handle];
@@ -1109,9 +1133,11 @@
                 };
             });
             
+            
             select.addEventListener('change', function () {
                 slider.noUiSlider.set([this.value, null]);
             });
+            
             
             function setFilterFunction () {
                 if (symOn == 0) {
@@ -1119,13 +1145,8 @@
                 } else if (symOn == 1) {
                     map.setFilter('plant', ['all', maxYearFilter, minYearFilter, NewFilter, AcqFilter, JovFilter, sicFilter, sicFilterMax]);
                 };
-            }; 
+            };
             
-            
-            /* Switch JS code from https://webcodespace.com/how-to-create-a-three-state-toggle-switch-using-html-css-and-javascript/ */
-            
-            
-           
             
         </script>
     </body>

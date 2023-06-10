@@ -18,10 +18,9 @@
 #title{
     position: relative;
     text-align: center;
-    font-size: 18px;
     padding: 10px;
     height: 10px;
-    top: -11px;
+    top: -18px;
 }
 #info {
     position: absolute;
@@ -228,6 +227,14 @@
     right: 20px;
     animation: fadeOut 3s;
 }
+#infoModalClosed{
+    display: none;
+    position: fixed;
+    z-index: 2;
+    bottom: 20px;
+    right: 20px;
+    animation: fadeOut 3s;
+}
 @keyframes fadeOut {
     0% { opacity: 1; }
     10% { opacity: 1; }
@@ -237,6 +244,13 @@
     position: relative;
     padding: 10px;
     background: white;
+    border-radius: 4px;
+    height: 18px;
+}
+#pincopyy{
+    position: relative;
+    padding: 10px;
+    background-color: #ffe008;
     border-radius: 4px;
     height: 18px;
 }
